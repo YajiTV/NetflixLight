@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded font-semibold transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-netflix-red hover:bg-red-700 text-white;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-800 hover:bg-gray-700 text-white border border-gray-600;
+  }
+
+  .card {
+    @apply bg-gray-800 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-200;
+  }
+
+  .hero {
+    @apply min-h-screen bg-gradient-to-b from-gray-900 to-black;
+  }
+}
