@@ -24,6 +24,8 @@ db.exec(`
     password    TEXT    NOT NULL,               -- bcrypt hash
     avatar      TEXT    DEFAULT NULL,           -- URL ou emoji
     theme       TEXT    DEFAULT 'dark',         -- 'dark' | 'light'
+    role        TEXT    DEFAULT 'user',         -- 'user' | 'admin'
+                CHECK(role IN ('user', 'admin')),
     created_at  TEXT    DEFAULT (datetime('now')),
     updated_at  TEXT    DEFAULT (datetime('now'))
   );
