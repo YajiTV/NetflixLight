@@ -1,37 +1,8 @@
-(function(){
-  // register pages namespace
+(function () {
   window.pages = window.pages || {};
-
   window.pages.home = {
-    render: function(container, params) {
-      container.innerHTML = `
-        <div class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-          <div class="max-w-6xl mx-auto px-6 py-10">
-            <header class="flex items-center justify-between mb-12">
-              <h1 class="text-3xl font-bold">Netflix Light</h1>
-              <nav class="flex gap-6">
-                <a href="/" data-link class="hover:text-red-600">Home</a>
-                <a href="/search" data-link class="hover:text-red-600">Search</a>
-                <a href="/watchlist" data-link class="hover:text-red-600">Watchlist</a>
-              </nav>
-            </header>
-
-            <section class="mb-12">
-              <h2 class="text-4xl font-bold mb-4">Explore Movies & Shows</h2>
-              <p class="text-gray-600 dark:text-gray-400">Coming soon</p>
-            </section>
-
-          </div>
-        </div>
-      `;
-
-      // enable SPA links
-      container.querySelectorAll('a[data-link]').forEach(a => {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          window.app.router.navigate(new URL(a.href).pathname);
-        });
-      });
-    }
+    render(container) {
+      container.innerHTML = `${window.components.renderHeader()}<main class="p-8 max-w-6xl mx-auto">Home page skeleton</main>`;
+    },
   };
 })();
