@@ -2,18 +2,18 @@ const Database = require("better-sqlite3");
 const path = require("path");
 const fs = require("fs");
 
-// ─── Ensure data directory exists ───────────────────────────────────────────
+//Ensure data directory exists 
 const dataDir = path.resolve(__dirname, "../data");
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
-// ─── Open / create the database ─────────────────────────────────────────────
+// Open / create the database
 const db = new Database(process.env.DB_PATH || path.join(dataDir, "netflix.db"));
 
-// ─── Performance settings ────────────────────────────────────────────────────
+//Performance settings
 db.pragma("journal_mode = WAL");   // meilleures perfs en lecture/écriture simultanée
 db.pragma("foreign_keys = ON");    // active les contraintes FK
 
-// ─── Schema ──────────────────────────────────────────────────────────────────
+// Schema
 db.exec(`
 
   -- ── USERS ──────────────────────────────────────────────────────────────────
@@ -30,7 +30,7 @@ db.exec(`
     updated_at  TEXT    DEFAULT (datetime('now'))
   );
 
-  -- ── WATCHLIST ───────────────────────────────────────────────────────────────
+  --WATCHLIST 
   CREATE TABLE IF NOT EXISTS watchlist (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id      INTEGER NOT NULL,
@@ -44,7 +44,7 @@ db.exec(`
     UNIQUE(user_id, tmdb_id, media_type)        -- pas de doublon par user
   );
 
-  -- ── WATCH PROGRESS ──────────────────────────────────────────────────────────
+  --  WATCH PROGRESS
   CREATE TABLE IF NOT EXISTS watch_progress (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id      INTEGER NOT NULL,
@@ -61,6 +61,19 @@ db.exec(`
     UNIQUE(user_id, tmdb_id, media_type)        -- une seule progression par contenu
   );
 
+  -- Rating 
+  CREATE TABLE IF NOT EXISTS ratings (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id      INTEGER NOT NULL,
+    tmdb_id      INTEGER NOT NULL,
+    media_type   TEXT    NOT NULL, 
+                 CHECK(media_type IN ('movie', 'tv')),
+    rating      INTEGER NOT NULL,  
+                CHECK(rating BETWEEN 1 AND 5), -- étoiles
+    rated_at     TEXT    DEFAULT (datetime('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(user_id, tmdb_id, media_type)        -- une seule note par contenu
+  );
 `);
 
 console.log("SQLite connecté — base prête");
