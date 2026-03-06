@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
   router.init();
   console.log('🛣️ Router initialized');
 
+  // Bind layout links (header navigation)
+  bindLayoutLinks();
+
   // Check if user is authenticated
   const token = localStorage.getItem('token');
   if (token) {
@@ -26,6 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('✨ App ready');
 });
+
+function bindLayoutLinks() {
+  document.querySelectorAll('#websiteheader a[data-link]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      router.navigate(new URL(a.href).pathname);
+    });
+  });
+}
 
 function applyTheme() {
   const theme = store.getState().theme;
