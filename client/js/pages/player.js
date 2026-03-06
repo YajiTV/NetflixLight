@@ -1,5 +1,5 @@
 (function(){
-  window.pages = window.player || {};
+  window.pages = window.pages || {};
 
   window.pages.player = {
     render(container, params) {

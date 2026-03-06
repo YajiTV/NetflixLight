@@ -1,5 +1,5 @@
 (function(){
-  window.pages = window.detail || {};
+  window.pages = window.pages || {};
 
   window.pages.detail = {
     render(container, params) {
