@@ -6,6 +6,8 @@ const UserModel = {
 
   findById: (id) =>
     db.prepare("SELECT id, username, email, avatar, theme, role, created_at FROM users WHERE id = ?").get(id),
+  findByUsername :(username) =>
+    db.prepare("SELECT * FROM users WHERE username = ?").get(username),
 
   create: ({ username, email, password }) =>
     db.prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)").run(username, email, password),
