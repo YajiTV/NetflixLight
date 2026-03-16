@@ -34,6 +34,9 @@
     }
 
     window.pages[matched.page].render(app, matched.params);
+    if (window.components?.bindHeaderActions) {
+      window.components.bindHeaderActions();
+    }
   }
 
   function init() {

@@ -15,6 +15,7 @@
 
   function bindHeaderActions() {
     const btn = document.getElementById("logout-btn");
+    if (!btn) return;
 
     btn.addEventListener("click", async (e) => {
       e.preventDefault(); //evite navigation
