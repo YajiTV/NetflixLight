@@ -34,6 +34,10 @@
     }
 
     window.pages[matched.page].render(app, matched.params);
+    if (window.components?.renderFooter) {
+      app.style.paddingBottom = "64px";
+      app.insertAdjacentHTML("beforeend", window.components.renderFooter());
+    }
     if (window.components?.bindHeaderActions) {
       window.components.bindHeaderActions();
     }
