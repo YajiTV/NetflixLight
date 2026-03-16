@@ -14,12 +14,16 @@
     "spa",
     "vanilla-js",
     "express",
-    "sqlite"
+    "sqlite", 
+    "tailwindcss",
+    "nodejs",
+    "bcryptjs"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "better-sqlite3": "^9.2.2",
