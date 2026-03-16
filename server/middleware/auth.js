@@ -1,6 +1,9 @@
-function authRequired(req, res, next) {
-  // TODO: implement JWT/session validation.
-  return res.status(501).json({ error: 'Auth middleware not implemented yet' });
+function requireAuth(req, res, next) { 
+  if (!req.session || !req.session.userId) {
+    return res.status(401).json({error: "Not authenticated"});
+  }
+  return next();
+
 }
 
-module.exports = { authRequired };
+module.exports = {requireAuth}
