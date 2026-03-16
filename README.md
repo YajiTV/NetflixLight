@@ -56,3 +56,14 @@ fetch('/api/data').then(...)           → récupère des données serveur (JSON
 ### En résumé
 DOM  → le moteur qui affiche et met à jour le contenu
 SPA  → l'architecture qui exploite le DOM pour simuler une navigation sans rechargement
+
+### Hashache 
+https://peaklab.fr/glossaire/bcrypt > initialement 
+https://peaklab.fr/glossaire/argon2 > Apres recherche
+
+> Vainqueur du PHC 2015 — le seul algo conçu spécifiquement pour ce besoin
+> Memory-hard — rend les attaques GPU/ASIC prohibitivement coûteuses
+> 3 paramètres tunable — temps, mémoire, parallélisme
+> Résistant aux side-channel attacks (variante id)​
+> Recommandé par l'OWASP en premier choix absolu​
+> API quasi identique à bcrypt en Node.js — migration en 5 minutes
