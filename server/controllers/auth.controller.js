@@ -74,6 +74,15 @@ async function me(req, res) {
   return res.status(200).json({ user });
 }
 
+async function logout(req, res) {
+  req.session.destroy(() => {
+    res.clearCookie("connect.sid"); 
+    return res.status(200).json({
+      message: "Logged out"
+    });
+  });
+}
 
 
-module.exports = { register, login, me };
+
+module.exports = { register, login, me, logout };
