@@ -24,14 +24,6 @@
           </div>
         </div>
       `;
-
-      // enable SPA links
-      container.querySelectorAll('a[data-link]').forEach(a => {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          window.app.router.navigate(new URL(a.href).pathname);
-        });
-      });
     }
   };
 })();

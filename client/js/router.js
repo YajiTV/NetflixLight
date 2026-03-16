@@ -19,6 +19,16 @@ const router = {
 
   init() {
     window.addEventListener('popstate', () => this.render());
+
+    // Délégation d'événements globale pour tous les liens internes (SPA)
+    document.body.addEventListener('click', (e) => {
+      const link = e.target.closest('a[data-link]');
+      if (link) {
+        e.preventDefault();
+        this.navigate(new URL(link.href).pathname);
+      }
+    });
+
     this.render();
   },
 
@@ -59,14 +69,6 @@ const router = {
     } else {
       // fallback simple render
       container.innerHTML = `\n      <div class="min-h-screen p-6">\n        <header class="mb-6">\n          <nav class="flex gap-4">\n            <a href="/" data-link class="text-blue-600">Home</a>\n            <a href="/search" data-link class="text-blue-600">Search</a>\n            <a href="/watchlist" data-link class="text-blue-600">Watchlist</a>\n          </nav>\n        </header>\n        <main>\n          <h1 class="text-2xl font-semibold">Page: ${pageName}</h1>\n          <p class="text-gray-600 mt-2">Route: ${this.currentRoute}</p>\n        </main>\n      </div>\n    `;
-
-      // attach client-side navigation to links with data-link
-      container.querySelectorAll('a[data-link]').forEach(a => {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.navigate(new URL(a.href).pathname);
-        });
-      });
     }
   },
 
