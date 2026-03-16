@@ -65,10 +65,6 @@ async function login(req, res) {
 
   return res.status(200).json({ user });
 }
-
-async function me(req, res) {
-  res.status(501).json({ error: "GET /api/auth/me not implemented" });
-}
 async function me(req, res) {
   if (!req.session.userId) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -77,5 +73,7 @@ async function me(req, res) {
   const user = await AuthService.me(req.session.userId);
   return res.status(200).json({ user });
 }
+
+
 
 module.exports = { register, login, me };
