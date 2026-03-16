@@ -6,6 +6,7 @@
     '/watchlist': 'watchlist',
     '/player/:mediaType/:id': 'player',
     '/login': 'login',
+    //'/logout' : 'logout', not a page, later i think
     '/register': 'register',
     '/profile': 'profile',
   };
