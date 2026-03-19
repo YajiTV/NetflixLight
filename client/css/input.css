@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.js";
 
 @layer base {
   body {
@@ -14,11 +13,11 @@
   }
 
   .btn-primary {
-    @apply btn bg-netflix-red hover:bg-red-700 text-white;
+    @apply px-4 py-2 rounded font-semibold transition-all duration-200 bg-netflix-red hover:bg-red-700 text-white;
   }
 
   .btn-secondary {
-    @apply btn bg-gray-800 hover:bg-gray-700 text-white border border-gray-600;
+    @apply px-4 py-2 rounded font-semibold transition-all duration-200 bg-gray-800 hover:bg-gray-700 text-white border border-gray-600;
   }
 
   .card {
