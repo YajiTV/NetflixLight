@@ -56,5 +56,10 @@
     render();
   }
 
-  window.router = { init };
+  function navigate(path) {
+    history.pushState({}, '', path); 
+    render();
+  }
+
+  window.router = { init, navigate};
 })();

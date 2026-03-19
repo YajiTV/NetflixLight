@@ -42,8 +42,7 @@
 
         try {
           await window.api.auth.login(identifier, password);
-          window.history.pushState({}, '', '/');
-          window.router.init();
+          window.router.navigate('/');
         } catch (err) {
           errorEl.textContent = err.message;
         }

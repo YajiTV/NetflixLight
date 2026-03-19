@@ -7,6 +7,7 @@
           <a data-link href="/search">Search</a>
           <a data-link href="/watchlist">Watchlist</a>
           <a data-link href="/login">Login</a>
+          <a data-link href="/register">Register"</a>
           <a href="#" id="logout-btn">Log out</a>
         </nav>
       </header>
@@ -21,8 +22,7 @@
       e.preventDefault(); //evite navigation
       try {
         await window.api.auth.logout();
-        window.history.pushState({}, "", "/");
-        window.router.init();
+        window.router.navigate('/');
       } catch (err) {
         console.error(err);
       }

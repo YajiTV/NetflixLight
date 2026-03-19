@@ -1,93 +1,90 @@
 (function () {
   window.pages = window.pages || {};
+
   window.pages.home = {
-    render: async function(container, params) {
+
+    // render() est appelée par le router à chaque fois qu'on va sur "/"
+    render: async function (container) {
+
+      // 1. On affiche d'abord le squelette HTML (header + zones vides)
       container.innerHTML = `
-        <div class="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">          
-          <!-- ZONE BANNIÈRE : Prend toute la largeur de l'écran et 80% de la hauteur -->
-          <div id="zone-banniere" class="w-screen ml-[calc(50%-50vw)] bg-gray-800 relative overflow-hidden" style="height: 50vh;">
-            <div id="texte-chargement" class="absolute inset-0 flex items-center justify-center text-gray-400">Chargement du film...</div>
+        ${window.components.renderHeader()}
+        <main>
+
+          <!-- Zone bannière hero -->
+          <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
+            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter !</p>
           </div>
 
+          <!-- Zone carousels -->
           <div class="max-w-6xl mx-auto px-6 py-10">
-            <header class="flex items-center justify-between mb-12 mt-4">
-              <h1 class="text-5xl font-bold">Netflix Light</h1>
-              <nav class="flex gap-6">
-                <a href="/" data-link class="transition hover:scale-120">Home</a>
-                <a href="/search" data-link class="transition hover:scale-120">Search</a>
-                <a href="/watchlist" data-link class="transition hover:scale-120">Watchlist</a>
-              </nav>
-            </header>
-            <section class="mb-12">
-              <h2 class="text-4xl font-bold mb-4">Explore Movies & Shows</h2>
-              <p class="text-gray-600 dark:text-gray-400">Suite du catalogue</p>
-            </section>
+            <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
+            <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
+
+        </main>
+      `;
+
+      // chargement donnée du backend
+      try {
+        const res = await fetch('/api/tmdb/home', { credentials: 'include' });
+
+        // Si l'utilisateur n'est pas connecté (401), on arrête là
+        if (!res.ok) return;
+
+        const data = await res.json();
+
+        // 3. On remplit la bannière et les carousels avec les vraies données
+        this.renderHero(data.trending.results);
+        this.renderTrending(data.trending.results);
+
+      } catch (err) {
+        console.error('Erreur chargement home:', err);
+      }
+    },
+
+    // Affiche la grande bannière avec un film aléatoire
+    renderHero: function (movies) {
+      const banner = document.getElementById('hero-banner');
+      if (!banner || !movies.length) return;
+
+      // Film au hasard parmi les tendances
+      const movie = movies[Math.floor(Math.random() * movies.length)];
+      const imageUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+
+      banner.style.backgroundImage = `url('${imageUrl}')`;
+      banner.style.backgroundSize = 'cover';
+      banner.style.backgroundPosition = 'center';
+
+      banner.innerHTML = `
+        <!-- Dégradé noir en bas pour lire le texte -->
+        <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black/40"></div>
+
+        <!-- Titre + description en bas à gauche -->
+        <div class="absolute bottom-10 left-10 z-10 max-w-xl">
+          <h1 class="mb-3 text-4xl font-bold">${movie.title || movie.name}</h1>
+          <p class="text-gray-300 line-clamp-3">${movie.overview}</p>
         </div>
       `;
-      this.loadRandomHeroBanner();
-      // enable SPA links
-      container.querySelectorAll('a[data-link]').forEach(a => {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          window.app.router.navigate(new URL(a.href).pathname);
-        });
-      });
     },
-    loadRandomHeroBanner: async function() {
-      try {
-        const apiKey = 'cbd2531855b6d57b1572ef0f89edf701';
-        const url = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}&language=fr-FR`;
 
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-          throw new Error(`Erreur HTTP: ${response.status}`);
-        }
+    // Affiche une rangée de posters (carousel horizontal)
+    renderTrending: function (movies) {
+      const list = document.getElementById('trending-list');
+      if (!list) return;
 
-        const data = await response.json();
-        const trendingMovies = data.results;
+      // On prend les 10 premiers
+      list.innerHTML = movies.slice(0, 10).map(movie => `
+        <div class="shrink-0 w-40 transition cursor-pointer hover:opacity-75">
+          <img
+            class="w-full rounded"
+            src="https://image.tmdb.org/t/p/w300${movie.poster_path}"
+            alt="${movie.title || movie.name}"
+          />
+          <p class="mt-1 text-sm truncate">${movie.title || movie.name}</p>
+        </div>
+      `).join('');
+    },
 
-        if (trendingMovies && trendingMovies.length > 0) {
-
-          const randomIndex = Math.floor(Math.random() * trendingMovies.length);
-          const randomMovie = trendingMovies[randomIndex];
-
-          const zoneBanniere = document.getElementById('zone-banniere');
-          if (zoneBanniere) {
-            const imageUrl = `https://image.tmdb.org/t/p/original${randomMovie.backdrop_path}`;
-            
-            // On applique l'image de fond directement sur la div principale (zone-banniere)
-            zoneBanniere.style.backgroundImage = `url('${imageUrl}')`;
-            zoneBanniere.classList.add('bg-cover', 'bg-center');
-
-            zoneBanniere.innerHTML = `
-              <!-- VOILE SOMBRE BAS : Dégradé noir pour lire le texte en bas -->
-              <div id="voile-sombre" class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-              
-              <!-- VOILE SOMBRE HAUT : Dégradé noir pour faire ressortir la future barre de navigation -->
-              <div id="voile-sombre-haut" class="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-transparent to-transparent"></div>
-              
-              <!-- CONTENU : Texte et boutons positionnés en bas à gauche -->
-              <div id="contenu-banniere" class="absolute bottom-10 left-10 text-yellow z-10">
-                <h1 id="titre-film" class="text-5xl font-bold mb-4">${randomMovie.title || randomMovie.name}</h1>
-                <p id="description-film" class="text-lg max-w-xl mb-6 line-clamp-3">${randomMovie.overview}</p>
-                
-                <div id="groupe-boutons" class="flex gap-4">
-                  <button id="bouton-lecture" class="bg-transparent text-white border border-white px-6 py-2 font-bold rounded hover:bg-white hover:text-black transition"> Lecture </button>
-                  <button id="bouton-infos" class="bg-transparent text-white border border-white px-6 py-2 font-bold rounded hover:bg-white hover:text-black transition"> Plus d'infos </button>
-                </div>
-              </div>
-            `;
-          }
-        }
-      } catch (error) {
-        console.error("Erreur lors de la récupération des tendances:", error);
-        const zoneBanniere = document.getElementById('zone-banniere');
-        if (zoneBanniere) {
-          zoneBanniere.innerHTML = '<p class="text-red-500 flex items-center justify-center h-full">Erreur lors du chargement.</p>';
-        }
-      }
-    }
   };
 })();

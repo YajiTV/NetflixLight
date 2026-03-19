@@ -1,18 +1,15 @@
-(function(){
+(function () {
   window.pages = window.pages || {};
 
   window.pages.search = {
-    render(container, params) {
+    render(container) {
       container.innerHTML = `
-        <h1>search</h1>
-        <p>Paramètres : ${JSON.stringify(params)}</p>
+        ${window.components.renderHeader()}
+        <main class="max-w-6xl mx-auto px-6 py-10">
+          <h1 class="text-2xl font-bold">Recherche</h1>
+          <p class="mt-2 text-gray-400">Fonctionnalité à venir...</p>
+        </main>
       `;
-      container.querySelectorAll('a[data-link]').forEach(a => {
-        a.addEventListener('click', e => {
-          e.preventDefault();
-          window.app.router.navigate(new URL(a.href).pathname);
-        });
-      });
     }
   };
 })();

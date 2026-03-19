@@ -53,8 +53,7 @@
 
         try {
           await window.api.auth.register(username, email, password);
-          window.history.pushState({}, '', '/login');
-          window.router.init();
+          window.router.navigate('/login');
         } catch (err) {
           errorEl.textContent = err.message;
         }
