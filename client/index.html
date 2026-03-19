@@ -6,31 +6,42 @@
   <title>Netflix Light</title>
   <link rel="stylesheet" href="/css/output.css">
 </head>
-<body class="text-white bg-black">
-  <div id="app"></div>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen flex flex-col">
+    <header id="websiteheader">C'est le header</header>
+    <div id="app" class="flex-grow"></div>
+    
+    <footer id="websitefooter" class="bg-gradient-to-b from-gray-100 to-transparent dark:from-gray-900 dark:to-transparent mt-12 py-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left text-gray-600 dark:text-gray-400 text-sm mb-8">
+                <div class="flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-200 text-base mb-1">Contact</h3>
+                    <p>pourquoi tu veux savoir ?</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-200 text-base mb-1">School</h3>
+                    <p>Toulouse Ynov Campus</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-200 text-base mb-1">Code de ma carte bleue</h3>
+                    <p>0983</p>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 dark:text-gray-500 text-xs">
+                <p>Challenge-JS Project 2026</p>
+            </div>
+        </div>
+    </footer>
 
-  <script src="/js/core/store.js"></script>
-  <script src="/js/core/router.js"></script>
-
-  <script src="/js/utils/debounce.js"></script>
-
-  <script src="/js/api/http.js"></script>
-  <script src="/js/api/auth.api.js"></script>
-  <script src="/js/api/tmdb.api.js"></script>
-  <script src="/js/api/watchlist.api.js"></script>
-
-  <script src="/js/components/header.js"></script>
-  <script src="/js/components/footer.js"></script>
-
-  <script src="/js/pages/home.js"></script>
-  <script src="/js/pages/search.js"></script>
-  <script src="/js/pages/detail.js"></script>
-  <script src="/js/pages/watchlist.js"></script>
-  <script src="/js/pages/login.js"></script>
-  <script src="/js/pages/register.js"></script>
-  <script src="/js/pages/profile.js"></script>
-  <script src="/js/pages/player.js"></script>
-
-  <script src="/js/app.js"></script>
+    <script src="/js/pages/detail.js"></script>
+    <script src="/js/pages/player.js"></script>
+    <script src="/js/pages/home.js"></script>
+    <script src="/js/pages/search.js"></script>
+    <script src="/js/pages/profile.js"></script>
+    <script src="/js/pages/register.js"></script>
+    <script src="/js/pages/login.js"></script>
+    <script src="/js/pages/watchlist.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/router.js"></script>
+    <script src="/js/app.js"></script>
 </body>
 </html>

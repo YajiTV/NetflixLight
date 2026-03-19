@@ -1,10 +1,10 @@
 (function(){
   window.pages = window.pages || {};
 
-  window.pages.profile = {
+  window.pages.detail = {
     render(container, params) {
       container.innerHTML = `
-        <h1>profile</h1>
+        <h2>Page détail</h2>
         <p>Paramètres : ${JSON.stringify(params)}</p>
       `;
     }

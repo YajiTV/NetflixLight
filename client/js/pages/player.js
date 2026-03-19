@@ -1,8 +1,12 @@
-(function () {
+(function(){
   window.pages = window.pages || {};
+
   window.pages.player = {
-    render(container) {
-      container.innerHTML = `${window.components.renderHeader()}<main class="p-8 max-w-6xl mx-auto">Player page skeleton</main>`;
-    },
+    render(container, params) {
+      container.innerHTML = `
+        <h1>player</h1>
+        <p>Paramètres : ${JSON.stringify(params)}</p>
+      `;
+    }
   };
 })();
