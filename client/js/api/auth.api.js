@@ -2,7 +2,7 @@
   window.api = window.api || {};
   window.api.auth = {
     async register(username, email, password) {
-      const res = await fetch('/api/auth/register', {
+      const res = await window.http('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -17,7 +17,7 @@
     },
 
     async login(identifier, password) {
-      const res = await fetch('/api/auth/login', {
+      const res = await wi('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -31,7 +31,7 @@
       return data.user;
     },
     async logout() {
-  const res = await fetch('/api/auth/logout', {
+  const res = await window.http('/api/auth/logout', {
     method: 'POST',
     credentials: 'include',
   });

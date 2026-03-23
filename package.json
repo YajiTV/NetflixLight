@@ -23,14 +23,11 @@
   "license": "MIT",
   "dependencies": {
     "argon2": "^0.44.0",
-    "bcryptjs": "^2.4.3",
     "better-sqlite3": "^9.2.2",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.22.1",
-    "express-session": "^1.19.0",
-    "jsonwebtoken": "^8.5.1"
+    "express-session": "^1.19.0"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
