@@ -3,38 +3,36 @@
 
   window.pages.home = {
 
-    // render() est appelée par le router à chaque fois qu'on va sur "/"
+    // / => render()
     render: async function (container) {
 
-      // 1. On affiche d'abord le squelette HTML (header + zones vides)
+      // squelette (header, footer)
       container.innerHTML = `
         ${window.components.renderHeader()}
-        <main>
-
-          <!-- Zone bannière hero -->
-          <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
-            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter !</p>
-          </div>
-
-          <!-- Zone carousels -->
-          <div class="max-w-6xl mx-auto px-6 py-10">
-            <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
-            <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
-          </div>
-
-        </main>
+        <main id="main-content></main>
       `;
 
       // chargement donnée du backend
       try {
         const res = await fetch('/api/tmdb/home', { credentials: 'include' });
 
-        // Si l'utilisateur n'est pas connecté (401), on arrête là
+        // Si l'utilisateur n'est pas connecté (401), on affiche un message avec lien
+        if (res.status === 401) {
+          document.getElementById('main-content').innerHTML = `
+            <div class="flex items-center justify-center py-20">
+  <p class="text-gray-400">
+    Veuillez vous connecter pour accéder aux données :
+    <a href="/login" data-link class="ml-1 underline text-white">login</a>
+  </p>
+</div>
+          `;
+          return;
+        }
         if (!res.ok) return;
 
         const data = await res.json();
 
-        // 3. On remplit la bannière et les carousels avec les vraies données
+        //insere les données
         this.renderHero(data.trending.results);
         this.renderTrending(data.trending.results);
 
@@ -43,7 +41,7 @@
       }
     },
 
-    // Affiche la grande bannière avec un film aléatoire
+    // Grande banierre
     renderHero: function (movies) {
       const banner = document.getElementById('hero-banner');
       if (!banner || !movies.length) return;
@@ -68,12 +66,12 @@
       `;
     },
 
-    // Affiche une rangée de posters (carousel horizontal)
+    // Caroussel
     renderTrending: function (movies) {
       const list = document.getElementById('trending-list');
       if (!list) return;
 
-      // On prend les 10 premiers
+      // 10 premiers
       list.innerHTML = movies.slice(0, 10).map(movie => `
         <div class="shrink-0 w-40 transition cursor-pointer hover:opacity-75">
           <img
