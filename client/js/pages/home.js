@@ -12,20 +12,20 @@
         <main>
           <!--Zone bannière hero-->
           <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
-            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter sur 
+            <p class="flex items-center justify-center h-full text-gray-400">Please log in to 
             <a href="/login" class="underline text-gray-400 hover:text-white ml-1"> /login</a>
             </p>
           </div>
 
           <!--Zone carousel-->
           <div class="max-w-6xl mx-auto px-6 py-10">
-            <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
+            <h2 class="mb-4 text-2xl font-bold">Trends of the week</h2>
             <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
 
           <!-- Zone carousel serie pop -->
           <div class="max-w-6xl mx-auto px-6 py-10">
-            <h2 class="mb-4 text-2xl font-bold">Séries populaires</h2>
+            <h2 class="mb-4 text-2xl font-bold">Popular series</h2>
             <div id="popular-tv-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
         </main>
@@ -46,7 +46,7 @@
         this.renderPopularTv(data.popularTv.results)
 
       } catch (err) {
-        console.error('Erreur chargement home:', err);
+        console.error('Error loading home page:', err);
       }
     },
 
