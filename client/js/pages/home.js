@@ -6,7 +6,7 @@
     // render() est appelée par le router à chaque fois qu'on va sur "/"
     render: async function (container) {
 
-      // 1. On affiche d'abord le squelette HTML (header + zones vides)
+      // Affichage HTML
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main>
@@ -25,16 +25,16 @@
         </main>
       `;
 
-      // chargement donnée du backend
+      // chargement du Backend
       try {
         const res = await fetch('/api/tmdb/home', { credentials: 'include' });
 
-        // Si l'utilisateur n'est pas connecté (401), on arrête là
+        // utilisateur non connecté
         if (!res.ok) return;
 
         const data = await res.json();
 
-        // 3. On remplit la bannière et les carousels avec les vraies données
+        // insérer les données
         this.renderHero(data.trending.results);
         this.renderTrending(data.trending.results);
 
@@ -43,7 +43,7 @@
       }
     },
 
-    // Affiche la grande bannière avec un film aléatoire
+    // Affiche le Hero Banner
     renderHero: function (movies) {
       const banner = document.getElementById('hero-banner');
       if (!banner || !movies.length) return;
@@ -68,12 +68,12 @@
       `;
     },
 
-    // Affiche une rangée de posters (carousel horizontal)
+    // Affiche une rangée de posters ( carroussel )
     renderTrending: function (movies) {
       const list = document.getElementById('trending-list');
       if (!list) return;
 
-      // On prend les 10 premiers
+      // 10 premiers
       list.innerHTML = movies.slice(0, 10).map(movie => `
         <div class="shrink-0 w-40 transition cursor-pointer hover:opacity-75">
           <img
