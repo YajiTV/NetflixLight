@@ -5,24 +5,24 @@
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main class="max-w-6xl mx-auto px-6 py-10">
-          <!-- Barre de recherche -->
+          <!-- Searchbar -->
           <div class="mb-8">
             <input
               id="search-input"
               type="text"
               class="w-full md:w-1/2 p-3 bg-gray-900 border border-gray-700 rounded text-white focus:outline-none focus:border-red-600 transition-colors"
-              placeholder=" Rechercher un film, une série..."
+              placeholder=" Search for a film, a TV series..."
               autocomplete="off"
               autofocus
             />
           </div>
           
-          <!-- Titre des résultats -->
+          <!-- Title of the results -->
           <h2 id="search-title" class="text-xl font-bold mb-4 text-white"></h2>
 
           <!-- grille de résultats -->
           <div id="search-results" class="flex gap-4 pb-4 overflow-x-auto">
-            <p class="text-gray-400 w-full px-2">Commencez à taper pour rechercher...</p>
+            <p class="text-gray-400 w-full px-2">Start typing to search...</p>
           </div>
         </main>
       `;
@@ -33,9 +33,9 @@
       let timer;
 
       // recherche
-      async function Rechercher(texte) {
+      async function search(texte) {
         if (texte === "") {
-          resultsContainer.innerHTML = '<p class="text-gray-400 w-full px-2">Commencez à taper pour rechercher...</p>';
+          resultsContainer.innerHTML = '<p class="text-gray-400 w-full px-2">Start typing to search...</p>';
           searchTitle.textContent = '';
           return;
         }
@@ -47,20 +47,20 @@
           const resultats = donnees.results;
 
           if (resultats.length === 0) {
-            resultsContainer.innerHTML = '<p class="text-gray-400 w-full px-2">Aucun résultat trouvé.</p>';
+            resultsContainer.innerHTML = '<p class="text-gray-400 w-full px-2">No results found.</p>';
             searchTitle.textContent = '';
             return;
           }
 
           let html = "";
-          searchTitle.textContent = `Résultats pour "${texte}"`;
+          searchTitle.textContent = `Results for the search "${texte}"`;
           
           for (let i = 0; i < resultats.length; i++) {
             let item = resultats[i];
 
             if (item.poster_path != null) {
               let type = item.media_type ? item.media_type : 'movie';
-              let titre = item.title ? item.title : item.name;
+              let titre = item.original_title || item.original_name || item.title || item.name;
 
               html += `
                 <a data-link href="/detail/${type}/${item.id}" class="shrink-0 block transition transform cursor-pointer hover:opacity-75 hover:scale-105 duration-200" style="width: 160px;">
@@ -83,7 +83,7 @@
         let texteTape = event.target.value;
         clearTimeout(timer);
         timer = setTimeout(function () {
-        Rechercher(texteTape);
+        search(texteTape);
         }, 300);
       });
     }
