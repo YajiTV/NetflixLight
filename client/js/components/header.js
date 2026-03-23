@@ -8,7 +8,7 @@
           <a data-link href="/watchlist">Watchlist</a>
           <a data-link href="/login">Login</a>
           <a data-link href="/register">Register</a>
-          <a href="#" id="logout-btn">Log out</a>
+          <a href="#" id="logout-btn" class="text-red-600">Log out</a>
         </nav>
       </header>
     `;
