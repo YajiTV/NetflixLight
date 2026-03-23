@@ -9,7 +9,7 @@ const app = express();
 const clientPath = path.join(__dirname, '..', 'client');
 app.use(expresssession({
   secret: 'secretkey',
-  cookie: { expire: new Date(Date.now() + 60 * 60 * 4 * 1000) }, // 4 hour
+  cookie: { cookie: { maxAge: 4 * 60 * 60 * 1000 }}, // 4 hour
 }));
 
 app.use(cors());

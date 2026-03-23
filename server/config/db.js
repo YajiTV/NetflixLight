@@ -64,6 +64,6 @@ db.exec(`
 
 `);
 
-console.log("SQLite connecté — base prête");
+console.log("SQLite connecté - base prête");
 
 module.exports = db;

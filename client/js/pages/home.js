@@ -8,10 +8,15 @@
 
       // squelette (header, footer)
       container.innerHTML = `
-        ${window.components.renderHeader()}
-        <main id="main-content></main>
-      `;
-
+  ${window.components.renderHeader()}
+  <main id="main-content">
+    <div id="hero-banner" class="relative h-500px"></div>
+    <section class="px-8 py-6">
+      <h2 class="mb-4 text-xl font-bold">Tendances</h2>
+      <div id="trending-list" class="flex gap-4 overflow-x-auto pb-2"></div>
+    </section>
+  </main>
+`;
       // chargement donnée du backend
       try {
         const res = await fetch('/api/tmdb/home', { credentials: 'include' });
