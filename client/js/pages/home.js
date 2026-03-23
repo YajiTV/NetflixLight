@@ -10,12 +10,14 @@
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main>
-          <!-- Zone bannière hero -->
+          // Zone bannière hero
           <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
-            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter !</p>
+            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter sur 
+            <a href="/login" class="underline text-gray-400 hover:text-white ml-1"> /login</a>
+            </p>
           </div>
 
-          <!-- Zone carousels -->
+          // Zone carousel
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
             <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
@@ -27,18 +29,6 @@
       try {
         const res = await fetch('/api/tmdb/home', { credentials: 'include' });
 
-        // Si l'utilisateur n'est pas connecté (401), on affiche un message avec lien
-        if (res.status === 401) {
-          document.getElementById('main-content').innerHTML = `
-            <div class="flex items-center justify-center py-20">
-  <p class="text-gray-400">
-    Veuillez vous connecter pour accéder aux données :
-    <a href="/login" data-link class="ml-1 underline text-white">login</a>
-  </p>
-</div>
-          `;
-          return;
-        }
         if (!res.ok) return;
 
         const data = await res.json();

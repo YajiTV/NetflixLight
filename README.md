@@ -52,6 +52,49 @@ history.pushState({}, '', '/route')    → change l'URL sans recharger la page
 window.onpopstate = callback           → gère le bouton "retour" du navigateur
 fetch('/api/data').then(...)           → récupère des données serveur (JSON) sans reload
 
+### API REST : 
+C'est une interface qui permet à deux applications de communiquer entre elles via le protocole HTTP, en échangeant des données généralement au format JSON.
+
+Principes clés : 
+
+Stateless : le serveur ne garde aucune mémoire du client entre deux requêtes — chaque requête est autonome et contient toutes les infos nécessaires (c'est là que le JWT entre en jeu)​
+
+Client-Serveur : séparation stricte entre le front et le back​
+
+Système en couches : l'API peut passer par des proxys, load balancers, etc., sans que le client s'en préoccupe​
+
+Réponses en JSON : format léger, lisible par les humains et les machine
+
+### Codes a retenir : 
+2xx — Succès
+| Code | Nom        | Quand l'utiliser                                        |
+| ---- | ---------- | ------------------------------------------------------- |
+| 200  | OK         | Requête réussie, données renvoyées (GET) mintfull​      |
+| 201  | Created    | Ressource créée avec succès (POST) laconsole​           |
+| 204  | No Content | Succès mais rien à renvoyer (DELETE) developer.mozilla​ |
+3xx — Redirections
+| Code | Nom               | Quand l'utiliser                              |
+| ---- | ----------------- | --------------------------------------------- |
+| 301  | Moved Permanently | L'URL a changé définitivement dotcom-monitor​ |
+| 302  | Found             | Redirection temporaire wikipedia​             |
+4xx — Erreurs côté client
+| Code | Nom                  | Signification                                                                             |
+| ---- | -------------------- | ----------------------------------------------------------------------------------------- |
+| 400  | Bad Request          | Requête mal formée, JSON invalide, champ manquant ex2​                                    |
+| 401  | Unauthorized         | Non authentifié — token JWT absent ou invalide mintfull​                                  |
+| 403  | Forbidden            | Authentifié mais sans les droits — ex: un user qui tente d'accéder à une route admin dev​ |
+| 404  | Not Found            | Ressource introuvable search-factory​                                                     |
+| 405  | Method Not Allowed   | Mauvais verbe HTTP utilisé sur la route (ex: POST sur une route GET) laconsole​           |
+| 409  | Conflict             | Conflit de données — ex: email déjà utilisé à l'inscription ex2​                          |
+| 422  | Unprocessable Entity | Données syntaxiquement valides mais sémantiquement incorrectes developer.mozilla​         |
+5xx — Erreurs côté serveur
+| Code | Nom                   | Signification                                                   |
+| ---- | --------------------- | --------------------------------------------------------------- |
+| 500  | Internal Server Error | Crash non géré côté serveur (bug, DB down) dev​                 |
+| 502  | Bad Gateway           | Proxy ou load balancer n'a pas pu joindre le serveur wikipedia​ |
+| 503  | Service Unavailable   | Serveur surchargé ou en maintenance ex2​                        |
+| 504  | Gateway Timeout       | Le serveur en amont n'a pas répondu à temps wikipedia​          |
+
 
 ### En résumé
 DOM  → le moteur qui affiche et met à jour le contenu
