@@ -22,6 +22,12 @@
             <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
             <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
+
+          <!-- Zone carousel serie pop -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Séries populaires</h2>
+            <div id="popular-tv-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
         </main>
       `;
 
@@ -29,13 +35,15 @@
       try {
         const res = await fetch('/api/tmdb/home', { credentials: 'include' });
 
-        if (!res.ok) return;
+        if (!res.ok) 
+          return;
 
         const data = await res.json();
 
         //insere les données
         this.renderHero(data.trending.results);
         this.renderTrending(data.trending.results);
+        this.renderPopularTv(data.popularTv.results)
 
       } catch (err) {
         console.error('Erreur chargement home:', err);
@@ -67,9 +75,13 @@
       `;
     },
 
+
     // Caroussel
     renderTrending: function (movies) {
       window.components.Carousel('trending-list', movies);
+    },
+    renderPopularTv: function(serie) {
+      window.components.Carousel('popular-tv-list', serie);
     },
   };
 })();

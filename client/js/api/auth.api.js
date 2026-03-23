@@ -17,7 +17,7 @@
     },
 
     async login(identifier, password) {
-      const res = await wi('/api/auth/login', {
+      const res = await window.http('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
