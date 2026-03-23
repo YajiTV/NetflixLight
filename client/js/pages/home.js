@@ -9,7 +9,18 @@
       // squelette (header, footer)
       container.innerHTML = `
         ${window.components.renderHeader()}
-        <main id="main-content></main>
+        <main>
+          <!-- Zone bannière hero -->
+          <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
+            <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter !</p>
+          </div>
+
+          <!-- Zone carousels -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
+            <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
+        </main>
       `;
 
       // chargement du Backend
