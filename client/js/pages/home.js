@@ -10,14 +10,14 @@
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main>
-          // Zone bannière hero
+          <!--Zone bannière hero-->
           <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;">
             <p class="flex items-center justify-center h-full text-gray-400">Veuillez vous connecter sur 
             <a href="/login" class="underline text-gray-400 hover:text-white ml-1"> /login</a>
             </p>
           </div>
 
-          // Zone carousel
+          <!--Zone carousel-->
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Tendances de la semaine</h2>
             <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
@@ -69,21 +69,7 @@
 
     // Caroussel
     renderTrending: function (movies) {
-      const list = document.getElementById('trending-list');
-      if (!list) return;
-
-      // 10 premiers
-      list.innerHTML = movies.slice(0, 10).map(movie => `
-        <div class="shrink-0 w-40 transition cursor-pointer hover:opacity-75">
-          <img
-            class="w-full rounded"
-            src="https://image.tmdb.org/t/p/w300${movie.poster_path}"
-            alt="${movie.title || movie.name}"
-          />
-          <p class="mt-1 text-sm truncate">${movie.title || movie.name}</p>
-        </div>
-      `).join('');
+      window.components.Carousel('trending-list', movies);
     },
-
   };
 })();
