@@ -5,24 +5,24 @@
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main class="p-8 max-w-md mx-auto">
-          <h1 class="text-2xl font-bold">Se connecter</h1>
+          <h1 class="text-2xl font-bold">Log in</h1>
           <form id="login-form" class="mt-6 space-y-3">
             <input
               class="w-full p-2 bg-gray-900 border border-gray-700 rounded"
               type="text"
               name="identifier"
-              placeholder="Email ou username"
+              placeholder="Email or username"
               required
             />
             <input
               class="w-full p-2 bg-gray-900 border border-gray-700 rounded"
               type="password"
               name="password"
-              placeholder="Mot de passe"
+              placeholder="Password"
               required
             />
             <button class="w-full p-2 bg-red-600 text-white rounded" type="submit">
-              Connexion
+              Log in
             </button>
             <p id="login-error" class="text-red-400 text-sm"></p>
           </form>
