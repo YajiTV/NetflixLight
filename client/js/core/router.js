@@ -11,13 +11,14 @@
   };
 
   function matchRoute(path) {
-    if (routes[path]) return { page: routes[path], params: {} };
+    if (routes[path]) return { page: routes[path], params: [] };
 
     for (const pattern of Object.keys(routes)) {
       if (!pattern.includes(':')) continue;
-      const regex = new RegExp(`^${pattern.replace(/:\\w+/g, '[^/]+')}$`);
-      if (regex.test(path)) {
-        return { page: routes[pattern], params: {} };
+      const regex = new RegExp(`^${pattern.replace(/:\w+/g, '([^/]+)')}$`);
+      const match = path.match(regex);
+      if (match) {
+        return { page: routes[pattern], params: match.slice(1) };
       }
     }
 
@@ -25,6 +26,9 @@
   }
 
   function render() {
+    // Remonte tout en haut de la page à chaque changement de vue
+    window.scrollTo(0, 0);
+
     const app = document.getElementById('app');
     const matched = matchRoute(window.location.pathname || '/');
 
@@ -33,7 +37,7 @@
       return;
     }
 
-    window.pages[matched.page].render(app, matched.params);
+    window.pages[matched.page].render(app, ...matched.params);
     if (window.components?.renderFooter) {
       app.style.paddingBottom = "64px";
       app.insertAdjacentHTML("beforeend", window.components.renderFooter());
