@@ -1,7 +1,7 @@
 const { getEnv } = require('../config/env');
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-const DEFAULT_LANGUAGE = 'fr-FR';
+const DEFAULT_LANGUAGE = 'en-EN';
 const REQUEST_TIMEOUT_MS = 10000;
 
 function toError(status, message, details) {
