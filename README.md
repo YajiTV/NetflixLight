@@ -1,6 +1,9 @@
 # NetflixLight
 
-DOC API : https://developer.themoviedb.org/reference/trending-movies
+### Documentation : 
+
+API : https://developer.themoviedb.org/reference/trending-movies
+imogie : https://symbl.cc/fr/collections/star-symbols/
 
 
 # DOM & SPA — Notions essentielles

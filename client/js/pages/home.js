@@ -69,11 +69,8 @@
   if (!res.ok) return;
 
   const data = await res.json();
-
+  
   this.renderHero(data.trending.results);
-  this.renderTrending(data.trending.results);
-  this.renderPopularTv(data.popularTv.results);
-  this.renderTopRated(data.topRated);
 
   const [action, comedy, thriller, animation] = await Promise.all([
     fetch('/api/tmdb/genre/28', { credentials: 'include' }).then(r => r.json()),
@@ -82,6 +79,10 @@
     fetch('/api/tmdb/genre/16', {credentials:  'include'}).then(r => r.json()),
   ]);
 
+  // Caroussel
+  window.components.Carousel('trending-list', data.trending.results);
+  window.components.Carousel('popular-tv-list', data.popularTv.results);
+  window.components.Carousel('top-rated-list', data.topRated);
   window.components.Carousel('action-list', action);
   window.components.Carousel('comedy-list', comedy);
   window.components.Carousel('thriller-list', thriller);
@@ -149,15 +150,15 @@
 
 
     // Caroussel
-    renderTrending: function (movies) {
-      window.components.Carousel('trending-list', movies);
-    },
-    renderPopularTv: function(serie) {
-      window.components.Carousel('popular-tv-list', serie);
-    },
-    renderTopRated: function (items) {
-      window.components.Carousel('top-rated-list', items);
-    },
+    // renderTrending: function (movies) {
+    //   window.components.Carousel('trending-list', movies);
+    // },
+    // renderPopularTv: function(serie) {
+    //   window.components.Carousel('popular-tv-list', serie);
+    // },
+    // renderTopRated: function (items) {
+    //   window.components.Carousel('top-rated-list', items);
+    // },
 
   };
 })();

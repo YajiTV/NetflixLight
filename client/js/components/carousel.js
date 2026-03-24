@@ -16,7 +16,7 @@
 
       return `
         <a href="/detail/${mediaType}/${movie.id}" data-link class="relative shrink-0 w-40 cursor-pointer group">
-          <img class="w-full rounded" src="${poster}" alt="${title}" />
+          <img class="w-full rounded" loading="lazy" src="${poster}" alt="${title}" />
           <div class="absolute inset-0 rounded bg-black/80 opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-2">
             <p class="text-sm font-bold leading-tight">${title}</p>
             <p class="text-xs text-yellow-400">★ ${note}</p>
