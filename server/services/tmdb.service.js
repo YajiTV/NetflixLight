@@ -86,6 +86,15 @@ async function searchMulti(query, page = 1) {
   });
 }
 
+async function getByGenre(genreId) {
+  const data = await tmdbFetch('/discover/movie', {
+    with_genres: String(genreId),
+    sort_by: 'popularity.desc',
+    page: '1'
+  });
+  return data.results.map(m => ({...m, media_type: 'movie'}));
+}
+
 async function getDetail(mediaType, id) {
   return tmdbFetch(`/${mediaType}/${id}`, {
     append_to_response: 'videos,credits,similar',
@@ -95,5 +104,6 @@ async function getDetail(mediaType, id) {
 module.exports = {
   getHomeFeed,
   searchMulti,
+  getByGenre,
   getDetail,
 };

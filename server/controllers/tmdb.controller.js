@@ -39,4 +39,13 @@ async function detail(req, res) {
   res.json(data);
 }
 
-module.exports = { home, search, detail };
+async function genre(req, res) {
+  const genreId = Number(req.params.genreId);
+  if (!Number.isInteger(genreId) || genreId <= 0) {
+    throw badRequest('Invalid genreId. Expected a positive integer'); 
+  }
+  const data = await tmdbService.getByGenre(genreId);
+  res.json(data);
+} 
+
+module.exports = { home, search, detail, genre };

@@ -34,29 +34,63 @@
             <h2 class="mb-4 text-2xl font-bold">Highest rated</h2>
             <div id="top-rated-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
+
+          <!-- Zone Action -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Action</h2>
+            <div id="action-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
+
+          <!-- Zone Comédie -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Comedy</h2>
+            <div id="comedy-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
+
+          <!-- Zone Thriller -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Thriller</h2>
+            <div id="thriller-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
+
+          <!-- Zone Animation -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Animation</h2>
+            <div id="animation-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
+
         </main>
 
       `;
 
       // chargement du Backend
       try {
-        const res = await fetch('/api/tmdb/home', { credentials: 'include' });
+  const res = await fetch('/api/tmdb/home', { credentials: 'include' });
+  if (!res.ok) return;
 
-        if (!res.ok) 
-          return;
+  const data = await res.json();
 
-        const data = await res.json();
+  this.renderHero(data.trending.results);
+  this.renderTrending(data.trending.results);
+  this.renderPopularTv(data.popularTv.results);
+  this.renderTopRated(data.topRated);
 
-        //insere les données
-        this.renderHero(data.trending.results);
-        this.renderTrending(data.trending.results);
-        this.renderPopularTv(data.popularTv.results)
-        this.renderTopRated(data.topRated);
+  const [action, comedy, thriller, animation] = await Promise.all([
+    fetch('/api/tmdb/genre/28', { credentials: 'include' }).then(r => r.json()),
+    fetch('/api/tmdb/genre/35', { credentials: 'include' }).then(r => r.json()),
+    fetch('/api/tmdb/genre/53', {credentials:  'include'}).then(r => r.json()),
+    fetch('/api/tmdb/genre/16', {credentials:  'include'}).then(r => r.json()),
+  ]);
 
-      } catch (err) {
-        console.error('Error loading home page:', err);
-      }
-    },
+  window.components.Carousel('action-list', action);
+  window.components.Carousel('comedy-list', comedy);
+  window.components.Carousel('thriller-list', thriller);
+  window.components.Carousel('animation-list', animation);
+
+} catch (err) {
+  console.error('Error loading home page:', err);
+}},
+
 
     // Grande banierre
     renderHero: function (movies) {
