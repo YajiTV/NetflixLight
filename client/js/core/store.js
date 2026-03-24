@@ -14,4 +14,4 @@
       state.user = null;
     }
   }
-})
+})()

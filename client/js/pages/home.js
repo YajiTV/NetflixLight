@@ -6,6 +6,8 @@
     // / => render()
     render: async function (container) {
 
+      
+
       // squelette (header, footer)
       container.innerHTML = `
         ${window.components.renderHeader()}
@@ -66,7 +68,6 @@
       // chargement du Backend
       try {
   const res = await fetch('/api/tmdb/home', { credentials: 'include' });
-  if (!res.ok) return;
 
   const data = await res.json();
   

@@ -4,12 +4,11 @@ const { asyncHandler } = require('../utils/async-handler');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
-router.use(requireAuth);
 
 router.get('/home', asyncHandler(controller.home));
-router.get('/search', asyncHandler(controller.search));
-router.get('/detail/:mediaType/:id', asyncHandler(controller.detail));
 router.get('/genre/:genreId', asyncHandler(controller.genre));
+router.get('/search', requireAuth, asyncHandler(controller.search));
+router.get('/detail/:mediaType/:id', requireAuth, asyncHandler(controller.detail));
 
 
 
