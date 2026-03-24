@@ -28,7 +28,14 @@
             <h2 class="mb-4 text-2xl font-bold">Séries populaires</h2>
             <div id="popular-tv-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
+
+          <!-- Zone popular movie -->
+          <div class="max-w-6xl mx-auto px-6 py-10">
+            <h2 class="mb-4 text-2xl font-bold">Mieux notés</h2>
+            <div id="top-rated-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
+          </div>
         </main>
+
       `;
 
       // chargement du Backend
@@ -44,6 +51,7 @@
         this.renderHero(data.trending.results);
         this.renderTrending(data.trending.results);
         this.renderPopularTv(data.popularTv.results)
+        this.renderTopRated(data.topRated);
 
       } catch (err) {
         console.error('Erreur chargement home:', err);
@@ -63,16 +71,46 @@
       banner.style.backgroundSize = 'cover';
       banner.style.backgroundPosition = 'center';
 
+      const mediaType = movie.media_type || (movie.title ? 'movie' : 'tv');
+
       banner.innerHTML = `
         <!-- Dégradé noir en bas pour lire le texte -->
         <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black/40"></div>
 
-        <!-- Titre + description en bas à gauche -->
+        <!-- Titre + description + boutons en bas à gauche -->
         <div class="absolute bottom-10 left-10 z-10 max-w-xl">
           <h1 class="mb-3 text-4xl font-bold">${movie.title || movie.name}</h1>
-          <p class="text-gray-300 line-clamp-3">${movie.overview}</p>
+          <p class="text-gray-300 line-clamp-3 mb-5">${movie.overview}</p>
+          <div class="flex gap-3">
+            <a data-link href="/detail/${mediaType}/${movie.id}" class="px-5 py-2 bg-white text-black font-semibold rounded hover:bg-gray-200 transition">
+              Voir plus d'infos
+            </a>
+            <button id="hero-fav-btn" class="px-5 py-2 border border-white text-white font-semibold rounded hover:bg-white/10 transition">
+              Ajouter aux favoris
+            </button>
+          </div>
         </div>
       `;
+
+      // Logique bouton favoris
+      document.getElementById('hero-fav-btn').addEventListener('click', async () => {
+        const res = await fetch('/api/watchlist', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tmdb_id: movie.id,
+            media_type: mediaType,
+            title: movie.title || movie.name,
+            poster_path: movie.poster_path || '',
+          }),
+        });
+        const btn = document.getElementById('hero-fav-btn');
+        if (res.ok) {
+          btn.textContent = 'Ajouté aux favoris';
+          btn.disabled = true;
+        }
+      });
     },
 
 
@@ -83,5 +121,9 @@
     renderPopularTv: function(serie) {
       window.components.Carousel('popular-tv-list', serie);
     },
+    renderTopRated: function (items) {
+      window.components.Carousel('top-rated-list', items);
+    },
+
   };
 })();

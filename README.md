@@ -1,4 +1,8 @@
 # NetflixLight
+
+DOC API : https://developer.themoviedb.org/reference/trending-movies
+
+
 # DOM & SPA — Notions essentielles
 
 ## DOM — Document Object Model

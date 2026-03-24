@@ -55,18 +55,28 @@ async function tmdbFetch(path, query = {}) {
 }
 
 async function getHomeFeed() {
-  const [trending, nowPlaying, popularTv] = await Promise.all([
+  const [trending, nowPlaying, popularTv, topMovies, topTv] = await Promise.all([
     tmdbFetch('/trending/all/week'),
     tmdbFetch('/movie/now_playing', { page: 1 }),
     tmdbFetch('/tv/popular', { page: 1 }),
+    tmdbFetch('/movie/top_rated', { page: 1 }),
+    tmdbFetch('/tv/top_rated', { page: 1 }),
   ]);
+
+  // Mélange films + séries, triés par note décroissante
+  const topRated = [
+    ...topMovies.results.map(m => ({ ...m, media_type: 'movie' })),
+    ...topTv.results.map(s => ({ ...s, media_type: 'tv' })),
+  ].sort((a, b) => b.vote_average - a.vote_average).slice(0, 20);
 
   return {
     trending,
     nowPlaying,
     popularTv,
+    topRated,
   };
 }
+
 
 async function searchMulti(query, page = 1) {
   return tmdbFetch('/search/multi', {
