@@ -48,6 +48,23 @@
               <p class="text-gray-400 mb-6 text-lg">${annee} · ${duree} · ★ ${film.vote_average ? film.vote_average.toFixed(1) : 'N/A'}</p>
               <div class="flex gap-3 flex-wrap mb-8">${genres}</div>
               <p class="text-gray-300 text-lg leading-relaxed">${film.overview}</p>
+              
+              <!-- Boutons d'actions -->
+              <div class="flex gap-4 flex-wrap" style="margin-top: 2.5rem;">
+                <!-- Bouton Favoris (Coeur) -->
+                <button class="border border-white text-white transition-colors hover:bg-white hover:text-black cursor-pointer" style="padding: 10px 16px; border-radius: 50px; display: flex; align-items: center; justify-content: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+                <!-- Bouton Bande-annonce (Play + Texte) -->
+                <button class="border border-white text-white font-bold transition-colors hover:bg-white hover:text-black cursor-pointer" style="padding: 10px 24px; border-radius: 50px; display: flex; align-items: center; gap: 8px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px;">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  Bande-annonce
+                </button>
+              </div>
             </div>
           </div>
           ${castHtml}
