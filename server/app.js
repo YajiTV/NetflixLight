@@ -9,6 +9,8 @@ const app = express();
 const clientPath = path.join(__dirname, '..', 'client');
 app.use(expresssession({
   secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false,
   cookie: { expire: new Date(Date.now() + 60 * 60 * 4 * 1000) }, // 4 hour
 }));
 

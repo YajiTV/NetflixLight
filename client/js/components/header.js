@@ -19,12 +19,15 @@
     if (!btn) return;
 
     btn.addEventListener("click", async (e) => {
-      e.preventDefault(); //evite navigation
+      e.preventDefault();
+      btn.disabled = true;
       try {
         await window.api.auth.logout();
-        window.router.navigate('/');
       } catch (err) {
-        console.error(err);
+        console.error('Logout API error:', err);
+      } finally {
+        window.store.cleanUser();
+        window.router.navigate('/');
       }
     });
   }
