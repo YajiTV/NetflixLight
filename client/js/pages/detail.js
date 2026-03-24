@@ -4,12 +4,8 @@
   window.pages.detail = {
     async render(container, type, id) {
       if (!window.store.getState().user) {
-        container.innerHTML = `
-          ${window.components.renderHeader()}
-          <div class="flex items-center justify-center text-gray-400" style="height: 60vh;">
-            Please log in to <a href="/login" data-link class="underline ml-1">/login</a>
-          </div>
-        `;
+        sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+        window.router.navigate('/login');
         return;
       }
 

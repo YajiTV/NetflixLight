@@ -41,8 +41,11 @@
         const password = formData.get('password');
 
         try {
-          await window.api.auth.login(identifier, password);
-          window.router.navigate('/');
+          const user = await window.api.auth.login(identifier, password);
+          window.store.setUser(user);
+          const redirect = sessionStorage.getItem('redirectAfterLogin') || '/';
+          sessionStorage.removeItem('redirectAfterLogin');
+          window.router.navigate(redirect);
         } catch (err) {
           errorEl.textContent = err.message;
         }
