@@ -17,7 +17,7 @@
 
       const castList = (film.credits?.cast || []).slice(0, 10); // 10 premiers
       const castHtml = castList.length ? `
-        <div class="w-full px-8 md:px-16 py-8">
+        <div class="w-full max-w-6xl mx-auto px-8 md:px-16 py-8">
           <h2 class="text-2xl font-bold text-white mb-6">Main Cast</h2>
           <div class="flex gap-6 overflow-x-auto pb-4">
             ${castList.map(actor => `
@@ -37,9 +37,9 @@
           <div class="flex flex-wrap w-full min-h-screen pb-12 md:pb-0">
             <!-- Left Side -->
             <div class="w-full md:w-1/2 relative" style="min-height: 60vh;">
-              <img src="${displayImage}" alt="${titre}" class="absolute inset-0 w-full h-full p-4 md:p-8" style="object-fit: contain;" />
+              <img src="${displayImage}" alt="${titre}" class="absolute inset-0 w-full h-full" style="object-fit: contain; object-position: left;" />
               <!-- Fondus sécurisés via styles inline -->
-              <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, transparent 75%, black 100%);"></div>
+              <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, transparent 60%, black 100%);"></div>
               <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top, black 0%, transparent 20%);"></div>
             </div>
             <!-- Right Side -->
