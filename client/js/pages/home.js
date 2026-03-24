@@ -31,7 +31,7 @@
 
           <!-- Zone popular movie -->
           <div class="max-w-6xl mx-auto px-6 py-10">
-            <h2 class="mb-4 text-2xl font-bold">Mieux notés</h2>
+            <h2 class="mb-4 text-2xl font-bold">Highest rated</h2>
             <div id="top-rated-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
         </main>
@@ -83,10 +83,10 @@
           <p class="text-gray-300 line-clamp-3 mb-5">${movie.overview}</p>
           <div class="flex gap-3">
             <a data-link href="/detail/${mediaType}/${movie.id}" class="px-5 py-2 bg-white text-black font-semibold rounded hover:bg-gray-200 transition">
-              Voir plus d'infos
+              See more information
             </a>
             <button id="hero-fav-btn" class="px-5 py-2 border border-white text-white font-semibold rounded hover:bg-white/10 transition">
-              Ajouter aux favoris
+              Add to favorites
             </button>
           </div>
         </div>
@@ -107,7 +107,7 @@
         });
         const btn = document.getElementById('hero-fav-btn');
         if (res.ok) {
-          btn.textContent = 'Ajouté aux favoris';
+          btn.textContent = 'Add to favorites';
           btn.disabled = true;
         }
       });
