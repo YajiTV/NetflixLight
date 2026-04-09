@@ -13,6 +13,11 @@
         credentials: 'include'
       });
       const film = await reponse.json();
+      const watchlistRes = await fetch('/api/watchlist', {
+        credentials: 'include'
+      });
+      const watchlist = watchlistRes.ok ? await watchlistRes.json() : [];
+      let isInWatchlist = watchlist.some(w => String(w.tmdb_id) === String(id) && w.media_type === type);
       const titre    = film.title || film.name;
       const annee    = (film.release_date || film.first_air_date || '').slice(0, 4);
       const duree    = film.runtime ? `${Math.floor(film.runtime / 60)}h ${film.runtime % 60}min` : `${film.number_of_seasons} saison(s)`;
@@ -54,8 +59,8 @@
               <div class="flex gap-3 flex-wrap mb-8">${genres}</div>
               <p class="text-gray-300 text-lg leading-relaxed">${film.overview}</p>
               <div class="flex gap-4 flex-wrap" style="margin-top: 2.5rem;">
-                <button class="border border-white text-white transition-colors hover:bg-white hover:text-black cursor-pointer" style="padding: 10px 16px; border-radius: 50px; display: flex; align-items: center; justify-content: center;">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px;">
+                <button id="btn-watchlist" style="padding: 10px 16px; border-radius: 50px; border: 2px solid ${isInWatchlist ? 'transparent' : 'white'}; background: ${isInWatchlist ? 'rgba(229,9,20,0.85)' : 'transparent'}; color: white; cursor: pointer; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="white" stroke-width="2" style="width: 24px; height: 24px;" fill="${isInWatchlist ? 'white' : 'none'}">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </button>
@@ -71,6 +76,46 @@
           ${castHtml}
         </main>
       `;
+      const btnWL = document.getElementById('btn-watchlist');
+
+const svg = btnWL.querySelector('svg');
+
+function updateBtn() {
+  svg.setAttribute('fill', isInWatchlist ? 'white' : 'none');
+  btnWL.style.background = isInWatchlist ? 'rgba(229,9,20,0.85)' : 'transparent';
+  btnWL.style.borderColor = isInWatchlist ? 'transparent' : 'white';
+}
+
+btnWL.addEventListener('click', async function () {
+  isInWatchlist = !isInWatchlist;
+  updateBtn();
+
+  let res;
+  if (isInWatchlist) {
+    res = await fetch('/api/watchlist', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tmdb_id: id,
+        media_type: type,
+        title: film.title || film.name,
+        poster_path: film.poster_path || ''
+      })
+    });
+  } else {
+    res = await fetch(`/api/watchlist/${id}?type=${type}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+  }
+
+  if (!res.ok) {
+    isInWatchlist = !isInWatchlist;
+    updateBtn();
+  }
+});
+
     }
   };
 })();
