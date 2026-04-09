@@ -6,6 +6,10 @@ async function getWatchlist(req, res) {
 }
 
 async function addWatchlist(req, res) {
+  const { tmdb_id, media_type, title, poster_path } = req.body;
+  if (!tmdb_id || !media_type || !title) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
   service.add(req.session.userId, req.body);
   res.status(201).json({ ok: true });
 }
