@@ -32,11 +32,14 @@
           <h2 class="text-2xl font-bold text-white mb-6">Main Cast</h2>
           <div class="flex gap-6 overflow-x-auto pb-4">
             ${castList.map(actor => `
-              <div class="shrink-0 w-20 flex flex-col items-center text-center">
+              <a href="https://fr.wikipedia.org/w/index.php?search=${encodeURIComponent(actor.name)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="shrink-0 w-20 flex flex-col items-center text-center no-underline hover:opacity-75 transition-opacity">
                 <img src="${actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : `https://ui-avatars.com/api/?name=${encodeURIComponent(actor.name)}&background=333&color=fff`}" alt="${actor.name}" class="w-12 h-12 md:w-16 md:h-16 rounded-full shadow-md mb-3" style="object-fit: cover;" />
                 <p class="text-sm font-bold text-gray-200">${actor.name}</p>
                 <p class="text-xs text-gray-500 mt-1">${actor.character}</p>
-              </div>
+              </a>
             `).join('')}
           </div>
         </div>
