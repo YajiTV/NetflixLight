@@ -11,7 +11,7 @@
         ${window.components.renderHeader()}
         <main>
           <!--Zone bannière hero-->
-          <div id="hero-banner" class="relative w-full bg-gray-900" style="height: 60vh;"></div>
+          <div id="hero-banner" class="relative w-full" style="height: 60vh; background-color: var(--bg-surface);"></div>
 
           <!--Zone carousel-->
           <div class="max-w-6xl mx-auto px-6 py-10">
@@ -133,10 +133,10 @@
         });
 
         if (res.ok) {
-          btn.textContent = 'Added ✓';
+          btn.textContent = 'Added';
           btn.disabled = true;
         } else {
-          btn.textContent = 'Error, try again';
+          btn.textContent = 'Error, try again and again';
           setTimeout(() => { btn.textContent = 'Add to watchlist'; }, 3000);
         }
       });

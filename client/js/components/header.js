@@ -8,13 +8,23 @@
           <a data-link href="/watchlist">Watchlist</a>
           <a data-link href="/login">Login</a>
           <a data-link href="/register">Register</a>
+          <a data-link href="/profile" id="profile-btn">Profile</a>
           <a href="#" id="logout-btn" class="text-red-600">Log out</a>
+          <button id="theme-toggle-btn" class="ml-auto text-lg">
+            ${window.theme && window.theme.current() === 'light' ? '🌒' : '☀️'}
+          </button>
         </nav>
       </header>
     `;
   }
 
   function bindHeaderActions() {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        window.theme.toggle();
+      });
+    }
     const btn = document.getElementById("logout-btn");
     if (!btn) return;
 

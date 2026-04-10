@@ -26,7 +26,6 @@
   }
 
   function render() {
-    // Remonte tout en haut de la page à chaque changement de vue
     window.scrollTo(0, 0);
 
     const app = document.getElementById('app');
