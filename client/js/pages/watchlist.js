@@ -16,8 +16,7 @@
         </main>
       `;
 
-      const res = await fetch('/api/watchlist', { credentials: 'include' });
-      const items = res.ok ? await res.json() : [];
+      const items = await window.api.watchlist.getAll();
       const zone = document.getElementById('watchlist-content');
 
       if (items.length === 0) {
@@ -64,10 +63,7 @@
         btnRemove.style.cssText = 'position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:26px; height:26px; cursor:pointer; font-size:0.8rem;';
         btnRemove.addEventListener('click', async function (e) {
           e.stopPropagation();
-          await fetch('/api/watchlist/' + item.tmdb_id + '?type=' + item.media_type, {
-            method: 'DELETE',
-            credentials: 'include'
-          });
+          await window.api.watchlist.remove(item.tmdb_id, item.media_type);
           card.remove();
           if (grid.children.length === 0) window.pages.watchlist.render(container);
         });

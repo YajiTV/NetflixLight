@@ -61,34 +61,33 @@
 
       // chargement du Backend
       try {
-  const res = await fetch('/api/tmdb/home', { credentials: 'include' });
+        const data = await window.api.tmdb.getHome();
 
-  const data = await res.json();
-  
-  this.renderHero(data.trending.results);
+        this.renderHero(data.trending.results);
 
-  const [action, comedy, thriller, animation] = await Promise.all([
-    fetch('/api/tmdb/genre/28', { credentials: 'include' }).then(r => r.json()),
-    fetch('/api/tmdb/genre/35', { credentials: 'include' }).then(r => r.json()),
-    fetch('/api/tmdb/genre/53', {credentials:  'include'}).then(r => r.json()),
-    fetch('/api/tmdb/genre/16', {credentials:  'include'}).then(r => r.json()),
-  ]);
+        const [action, comedy, thriller, animation] = await Promise.all([
+          window.api.tmdb.getGenre(28),
+          window.api.tmdb.getGenre(35),
+          window.api.tmdb.getGenre(53),
+          window.api.tmdb.getGenre(16),
+        ]);
 
-  // Caroussel
-  window.components.Carousel('trending-list', data.trending.results);
-  window.components.Carousel('popular-tv-list', data.popularTv.results);
-  window.components.Carousel('top-rated-list', data.topRated);
-  window.components.Carousel('action-list', action);
-  window.components.Carousel('comedy-list', comedy);
-  window.components.Carousel('thriller-list', thriller);
-  window.components.Carousel('animation-list', animation);
+        // Caroussel
+        window.components.Carousel('trending-list', data.trending.results);
+        window.components.Carousel('popular-tv-list', data.popularTv.results);
+        window.components.Carousel('top-rated-list', data.topRated);
+        window.components.Carousel('action-list', action);
+        window.components.Carousel('comedy-list', comedy);
+        window.components.Carousel('thriller-list', thriller);
+        window.components.Carousel('animation-list', animation);
 
-} catch (err) {
-  console.error('Error loading home page:', err);
-}},
+      } catch (err) {
+        console.error('Error loading home page:', err);
+      }
+    },
 
 
-    // Grande banierre
+    // Grande bannière
     renderHero: function (movies) {
       const banner = document.getElementById('hero-banner');
       if (!banner || !movies.length) return;
@@ -116,7 +115,7 @@
               See more information
             </a>
             <button id="hero-fav-btn" class="px-5 py-2 border border-white text-white font-semibold rounded hover:bg-white/10 transition">
-              Add to favorites
+              Add to watchlist
             </button>
           </div>
         </div>
@@ -124,36 +123,24 @@
 
       // Logique bouton favoris
       document.getElementById('hero-fav-btn').addEventListener('click', async () => {
-        const res = await fetch('/api/watchlist', {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tmdb_id: movie.id,
-            media_type: mediaType,
-            title: movie.title || movie.name,
-            poster_path: movie.poster_path || '',
-          }),
-        });
         const btn = document.getElementById('hero-fav-btn');
+
+        const res = await window.api.watchlist.add({
+          tmdb_id: movie.id,
+          media_type: mediaType,
+          title: movie.title || movie.name,
+          poster_path: movie.poster_path || '',
+        });
+
         if (res.ok) {
-          btn.textContent = 'Add to favorites';
+          btn.textContent = 'Added ✓';
           btn.disabled = true;
+        } else {
+          btn.textContent = 'Error, try again';
+          setTimeout(() => { btn.textContent = 'Add to watchlist'; }, 3000);
         }
       });
     },
-
-
-    // Caroussel
-    // renderTrending: function (movies) {
-    //   window.components.Carousel('trending-list', movies);
-    // },
-    // renderPopularTv: function(serie) {
-    //   window.components.Carousel('popular-tv-list', serie);
-    // },
-    // renderTopRated: function (items) {
-    //   window.components.Carousel('top-rated-list', items);
-    // },
 
   };
 })();

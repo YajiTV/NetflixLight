@@ -54,8 +54,7 @@
 
         try {
           // API
-          const reponse = await fetch('/api/tmdb/search?q=' + texte, { credentials: 'include' });
-          const donnees = await reponse.json();
+          const donnees = await window.api.tmdb.search(texte);
           const resultats = donnees.results;
 
           if (resultats.length === 0) {
