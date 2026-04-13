@@ -42,7 +42,6 @@
       const searchInput = document.getElementById('search-input');
       const resultsContainer = document.getElementById('search-results');
       const searchTitle = document.getElementById('search-title');
-      let timer;
 
       // recherche
       async function search(texte) {
@@ -89,14 +88,9 @@
           searchTitle.textContent = '';
         }
       }
-      // Debounce
-      searchInput.addEventListener('input', function (event) {
-        let texteTape = event.target.value;
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-        search(texteTape);
-        }, 300);
-      });
+      searchInput.addEventListener('input', window.utils.debounce(function (event) {
+        search(event.target.value);
+      }, 300));
     }
   };
 })();

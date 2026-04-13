@@ -31,17 +31,17 @@
       return data.user;
     },
     async logout() {
-  const res = await window.http('/api/auth/logout', {
-    method: 'POST',
-    credentials: 'include',
-  });
+      const res = await window.http('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
 
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.error || 'Logout failed');
-  }
-  return data;
-},
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Logout failed');
+      }
+      return data;
+    },
 
   };
 })();

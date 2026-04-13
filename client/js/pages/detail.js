@@ -27,29 +27,30 @@
       const genres = (film.genres || []).map(g => `
         <span class="px-3 py-1 rounded-full border border-gray-600 text-sm text-gray-300">${g.name}</span>
       `).join('');
-      const poster   = film.poster_path   ? `https://image.tmdb.org/t/p/w500${film.poster_path}`    : '';
-      const backdrop = film.backdrop_path ? `https://image.tmdb.org/t/p/w1280${film.backdrop_path}` : '';
+      const poster = film.poster_path ? `https://image.tmdb.org/t/p/w500${film.poster_path}` : '';
 
       const castList = (film.credits?.cast || []).slice(0, 12);
       const castCarousel = castList.length ? `
-        <section class="mt-10">
-          <h2 class="text-xl font-bold mb-4">Casting</h2>
-          <div class="flex gap-5 overflow-x-auto pb-3" style="scrollbar-width: none;">
+        <section class="mt-12">
+          <h2 class="text-xl font-bold text-white mb-5">Casting</h2>
+          <div class="flex gap-4 overflow-x-auto pb-3" style="scrollbar-width: none;">
             ${castList.map(actor => `
               <a href="https://fr.wikipedia.org/w/index.php?search=${encodeURIComponent(actor.name)}"
                  target="_blank" rel="noopener noreferrer"
-                 class="shrink-0 w-24 flex flex-col items-center text-center no-underline group">
-                <img
-                  src="${actor.profile_path
-                    ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
-                    : `https://ui-avatars.com/api/?name=${encodeURIComponent(actor.name)}&background=222&color=fff&size=128`
-                  }"
-                  alt="${actor.name}"
-                  loading="lazy"
-                  class="w-16 h-16 rounded-full object-cover mb-2 shadow group-hover:ring-2 group-hover:ring-red-500 transition"
-                />
-                <p class="text-xs font-semibold text-white leading-tight">${actor.name}</p>
-                <p class="text-xs text-gray-500 mt-0.5 leading-tight">${actor.character}</p>
+                 class="shrink-0 w-28 no-underline group">
+                <div class="overflow-hidden rounded-lg mb-2 bg-gray-800">
+                  <img
+                    src="${actor.profile_path
+                      ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                      : `https://ui-avatars.com/api/?name=${encodeURIComponent(actor.name)}&background=333&color=fff&size=128`
+                    }"
+                    alt="${actor.name}"
+                    loading="lazy"
+                    class="w-full aspect-2/3 object-cover object-top group-hover:opacity-80 transition"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-white leading-tight truncate">${actor.name}</p>
+                <p class="text-xs text-gray-500 mt-0.5 leading-tight truncate">${actor.character}</p>
               </a>
             `).join('')}
           </div>
@@ -58,13 +59,15 @@
 
       container.innerHTML = `
         ${window.components.renderHeader()}
+        <main class="max-w-6xl mx-auto px-6 sm:px-10 py-10">
+
           <!-- Fiche film -->
           <div class="flex gap-8 flex-wrap items-start">
 
             <!-- Poster -->
             ${poster ? `
             <img src="${poster}" alt="${titre}"
-              class="w-44 rounded-xl shadow-2xl shrink-0 ${backdrop ? '' : ''}" />
+              class="w-44 rounded-xl shadow-2xl shrink-0" />
             ` : ''}
 
             <!-- Infos -->

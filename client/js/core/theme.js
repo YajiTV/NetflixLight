@@ -1,7 +1,7 @@
 (function initTheme() {
   window.theme = {
 
-    // Applique le thème save
+    // Applique le thème
     init: function () {
       const saved = localStorage.getItem('theme') || 'dark';
       this.apply(saved);
