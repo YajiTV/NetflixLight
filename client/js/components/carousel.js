@@ -1,4 +1,4 @@
-(function () {
+(function initCaroussel() {
   window.components = window.components || {};
 
   window.components.Carousel = function (containerId, movies) {

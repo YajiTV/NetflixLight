@@ -32,7 +32,16 @@
     const matched = matchRoute(window.location.pathname || '/');
 
     if (!matched || !window.pages?.[matched.page]) {
-      app.innerHTML = '<main class="p-8">404</main>';
+      app.innerHTML = `
+        ${window.components?.renderHeader ? window.components.renderHeader() : ''}
+        <main class="flex flex-col items-center justify-center py-20 px-6">
+          <img src="/assets/images/ERROR 404.png" alt="Page introuvable" class="max-w-md w-full" />
+          <a data-link href="/" class="mt-8 px-6 py-3 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition">
+            Retour à l'accueil
+          </a>
+        </main>
+      `;
+      if (window.components?.bindHeaderActions) window.components.bindHeaderActions();
       return;
     }
 
