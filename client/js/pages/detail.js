@@ -133,13 +133,16 @@
       if (btnTrailer && trailer) {
         btnTrailer.addEventListener('click', () => {
           const modal = document.createElement('div');
-          modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+          modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+          modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+          modal.style.backdropFilter = 'blur(12px)';
+          modal.style.WebkitBackdropFilter = 'blur(12px)'; // Pour la compatibilité Safari
           modal.addEventListener('click', () => modal.remove());
 
           modal.innerHTML = `
             <div class="relative w-full max-w-2xl">
               <button id="close-modal" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-gray-300 cursor-pointer">&times;</button>
-              <div class="rounded-[20px] border-4 border-white overflow-hidden shadow-2xl bg-black">
+              <div class="rounded-[20px] overflow-hidden shadow-2xl bg-black" style="border: 4px solid white;">
                 <div class="relative w-full" style="padding-top: 56.25%;">
                   <iframe
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
