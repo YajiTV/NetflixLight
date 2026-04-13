@@ -9,7 +9,7 @@
       return res.json();
     },
 
-    // GET /api/tmdb/genre/:id → films d'un genre
+    // GET /api/tmdb/genre/ → films d'un genre
     getGenre: async function (genreId) {
       const res = await window.http(`/api/tmdb/genre/${genreId}`);
       return res.json();

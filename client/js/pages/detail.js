@@ -29,6 +29,39 @@
       `).join('');
       const poster = film.poster_path ? `https://image.tmdb.org/t/p/w500${film.poster_path}` : '';
 
+      console.log('[similar raw]', film.similar);
+      const similarList = (film.similar?.results || [])
+        .filter(m => m.poster_path)
+        .slice(0, 12)
+        .map(m => ({ ...m, media_type: type }));
+      console.log('[similarList]', similarList);
+
+      const similarCarousel = similarList.length ? `
+        <section class="mt-12">
+          <h2 class="text-xl font-bold text-white mb-5">Similaires</h2>
+          <div class="flex gap-4 overflow-x-auto pb-3" style="scrollbar-width: none;">
+            ${similarList.map(item => {
+              const t = item.title || item.name;
+              const n = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+              const y = (item.release_date || item.first_air_date || '').slice(0, 4);
+              return `
+                <a data-link href="/detail/${type}/${item.id}"
+                   class="relative shrink-0 w-40 cursor-pointer group">
+                  <img class="w-full rounded" loading="lazy"
+                       src="https://image.tmdb.org/t/p/w300${item.poster_path}"
+                       alt="${t}" />
+                  <div class="absolute inset-0 rounded bg-black/80 opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-2">
+                    <p class="text-sm font-bold leading-tight">${t}</p>
+                    <p class="text-xs text-yellow-400">★ ${n}</p>
+                    <p class="text-xs text-gray-400">${y}</p>
+                  </div>
+                </a>
+              `;
+            }).join('')}
+          </div>
+        </section>
+      ` : '';
+
       const castList = (film.credits?.cast || []).slice(0, 12);
       const castCarousel = castList.length ? `
         <section class="mt-12">
@@ -94,6 +127,9 @@
 
           <!-- Carousel casting -->
           ${castCarousel}
+
+          <!-- Similaires -->
+          ${similarCarousel}
 
         </main>
       `;
