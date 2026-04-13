@@ -11,8 +11,8 @@
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main class="max-w-6xl mx-auto px-6 py-10">
-          <h1 class="text-2xl font-bold text-white mb-8">Ma liste</h1>
-          <div id="watchlist-content" class="text-gray-400">Chargement...</div>
+          <h1 class="text-2xl font-bold text-white mb-8">My list</h1>
+          <div id="watchlist-content" class="text-gray-400">Loading...</div>
         </main>
       `;
 
@@ -21,9 +21,9 @@
 
       if (items.length === 0) {
         zone.innerHTML = `
-          <p class="mb-4">Ta liste est vide. Ajoute des films et séries depuis leur page détail !</p>
+          <p class="mb-4">Your list is empty. Add movies and series from their details page!</p>
           <button id="btn-browse" class="border border-white text-white px-5 py-2 rounded hover:bg-white hover:text-black transition">
-            Parcourir le catalogue
+            Browse the catalogue
           </button>
         `;
         document.getElementById('btn-browse').addEventListener('click', function () {
@@ -54,12 +54,12 @@
         info.style.cssText = 'padding:8px; background:#1a1a1a;';
         info.innerHTML = `
           <p style="color:white; font-size:0.85rem; font-weight:bold;">${item.title}</p>
-          <span style="color:#aaa; font-size:0.75rem;">${item.media_type === 'movie' ? 'Film' : 'Série'}</span>
+          <span style="color:#aaa; font-size:0.75rem;">${item.media_type === 'movie' ? 'Movie' : 'TV Show'}</span>
         `;
 
         const btnRemove = document.createElement('button');
         btnRemove.textContent = '✕';
-        btnRemove.title = 'Retirer des favoris';
+        btnRemove.title = 'Remove from watchlist';
         btnRemove.style.cssText = 'position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:26px; height:26px; cursor:pointer; font-size:0.8rem;';
         btnRemove.addEventListener('click', async function (e) {
           e.stopPropagation();

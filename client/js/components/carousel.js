@@ -12,7 +12,7 @@
       const mediaType = movie.media_type || (movie.title ? 'movie' : 'tv');
       const poster = movie.poster_path
         ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-        : '/assets/images/no-poster.png';
+        : '/assets/images/error404.png';
 
       return `
         <a href="/detail/${mediaType}/${movie.id}" data-link class="relative shrink-0 w-40 cursor-pointer group">
