@@ -29,6 +29,7 @@
       `).join('');
       const poster   = film.poster_path   ? `https://image.tmdb.org/t/p/w500${film.poster_path}`    : '';
       const backdrop = film.backdrop_path ? `https://image.tmdb.org/t/p/w1280${film.backdrop_path}` : '';
+      const trailer  = film.videos?.results?.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
       const castList = (film.credits?.cast || []).slice(0, 12);
       const castCarousel = castList.length ? `
@@ -78,13 +79,21 @@
                 ${film.overview || 'Aucun synopsis disponible.'}
               </p>
 
-              <!-- Bouton watchlist -->
-              <button id="btn-watchlist"
-                class="px-5 py-2 rounded-full font-semibold text-sm transition border ${isInWatchlist
-                  ? 'bg-red-600 border-red-600 text-white'
-                  : 'border-white text-white hover:bg-white hover:text-black'}">
-                ${isInWatchlist ? 'In watchlist' : 'Add to watchlist'}
-              </button>
+              <!-- Boutons -->
+              <div class="flex gap-3">
+                ${trailer ? `
+                <button id="btn-trailer" class="px-5 py-2 rounded-full font-semibold text-sm transition border border-white text-white hover:bg-white hover:text-black flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 -ml-1"><path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.647c1.295.742 1.295 2.545 0 3.286L7.279 20.99c-1.25.717-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+                  Trailer
+                </button>
+                ` : ''}
+                <button id="btn-watchlist"
+                  class="px-5 py-2 rounded-full font-semibold text-sm transition border ${isInWatchlist
+                    ? 'bg-red-600 border-red-600 text-white'
+                    : 'border-white text-white hover:bg-white hover:text-black'}">
+                  ${isInWatchlist ? 'In watchlist' : 'Add to watchlist'}
+                </button>
+              </div>
             </div>
 
           </div>
@@ -118,6 +127,39 @@
           updateBtn();
         }
       });
+
+      // Trailer modal logic
+      const btnTrailer = document.getElementById('btn-trailer');
+      if (btnTrailer && trailer) {
+        btnTrailer.addEventListener('click', () => {
+          const modal = document.createElement('div');
+          modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+          modal.addEventListener('click', () => modal.remove());
+
+          modal.innerHTML = `
+            <div class="relative w-full max-w-2xl">
+              <button id="close-modal" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-gray-300 cursor-pointer">&times;</button>
+              <div class="rounded-[20px] border-4 border-white overflow-hidden shadow-2xl bg-black">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                  <iframe
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    src="https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          modal.querySelector('div').addEventListener('click', (e) => e.stopPropagation());
+          modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
+          
+          document.body.appendChild(modal);
+        });
+      }
     }
   };
 })();
