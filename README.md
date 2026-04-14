@@ -1,119 +1,252 @@
-# NetflixLight
+<div align="center">
 
-### Documentation : 
+# 🎬 NetflixLight
 
-API : https://developer.themoviedb.org/reference/trending-movies
-imogie : https://symbl.cc/fr/collections/star-symbols/
+### Une SPA inspirée de Netflix, construite en Vanilla JS & Node.js
 
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express)](https://expressjs.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/Licence-MIT-green?style=for-the-badge)](LICENSE)
 
-# DOM & SPA — Notions essentielles
+[Fonctionnalités](#-fonctionnalités) • [Démarrage rapide](#-démarrage-rapide) • [Architecture](#-architecture) • [Stack technique](#-stack-technique)
 
-## DOM — Document Object Model
+</div>
 
-> Représentation en arbre de la page HTML. Chaque balise devient un objet JS manipulable.
+---
 
-### Sélectionner un élément
-document.getElementById(id)            → cible l'élément par son id
-document.querySelector(selecteur)      → cible le 1er élément qui correspond au sélecteur CSS
-document.querySelectorAll(selecteur)   → cible TOUS les éléments qui correspondent au sélecteur CSS
+## 🎯 Fonctionnalités
 
-### Modifier un élément
-el.textContent = 'texte'               → modifie le texte (sans interpréter le HTML)
-el.innerHTML   = '<b>texte</b>'        → modifie le contenu HTML
-el.setAttribute('attr', 'valeur')      → ajoute/modifie un attribut (src, href, data-…)
-el.style.color = 'red'                 → modifie un style inline
+<table>
+<tr>
+<td width="50%">
 
-### Manipuler les classes
-el.classList.add('maClasse')           → ajoute une classe
-el.classList.remove('maClasse')        → supprime une classe
-el.classList.toggle('maClasse')        → ajoute si absente, supprime si présente
-el.classList.contains('maClasse')      → retourne true/false
+### 🏠 Accueil & Découverte
+- **Hero Banner** – Film tendance aléatoire avec backdrop
+- **Carrousels multiples** – Tendances, séries populaires, mieux notés, genres
+- **Intégration TMDB** – Données en temps réel via l'API The Movie Database
+- **Thème sombre / clair** – Bascule persistante entre les sessions
 
-### Créer / supprimer des éléments
-const el = document.createElement('div')  → crée un nouvel élément
-parent.appendChild(el)                    → insère en dernier enfant
-parent.prepend(el)                        → insère en premier enfant
-el.remove()                               → supprime l'élément
+</td>
+<td width="50%">
 
-### Écouter des événements
-el.addEventListener('click', callback)    → déclenche callback au clic
-el.addEventListener('input', callback)    → déclenche à chaque frappe (champ texte)
-el.addEventListener('submit', callback)   → déclenche à la soumission d'un formulaire
-// Dans le callback : e.preventDefault()  → bloque le comportement par défaut (ex: reload)
+### 🔍 Recherche & Détail
+- **Recherche en direct** – Debounce 300ms, sans rechargement de page
+- **Page de détail** – Backdrop, synopsis, genres, note, durée / nb saisons
+- **Carrousel de casting** – Photos + noms des personnages
+- **Contenu similaire** – Recommandations automatiques
+- **Modal trailer** – Intégration YouTube avec play/pause/volume
 
----le moteur qui affiche et met à jour le contenu
-SPA  → l'architecture qui exploite le DOM pour simuler une navigation sans rechargement
+</td>
+</tr>
+<tr>
+<td>
 
+### 🔐 Authentification
+- **Inscription sécurisée** – Mot de passe conforme ANSSI (12+ cars, maj/min/chiffre/spécial)
+- **Connexion flexible** – Email ou nom d'utilisateur acceptés
+- **Cookies de session** – HTTP-only, côté serveur via `express-session`
+- **Hachage Argon2id** – Standard de l'industrie pour le stockage des mots de passe
 
-## SPA — Single Page Application
+</td>
+<td>
 
-> Une seule page HTML chargée au départ. La navigation ne recharge PAS la page :
-> le JS met à jour le DOM à la volée.
+### 📋 Watchlist & Profils
+- **Toggle Watchlist** – Ajout/suppression depuis n'importe quelle page, retour visuel immédiat
+- **Multi-profils** – Jusqu'à 5 profils par compte
+- **Sélection de profil** – Écran de sélection style Netflix à la connexion
+- **Watchlist par profil** – Listes indépendantes par profil
 
-### Différence avec un site classique (MPA)
-MPA (Multi Page App) → chaque lien = requête serveur + rechargement complet
-SPA                  → chaque lien = mise à jour du DOM + changement d'URL en JS
+</td>
+</tr>
+</table>
 
-### Concepts clés
-history.pushState({}, '', '/route')    → change l'URL sans recharger la page
-window.onpopstate = callback           → gère le bouton "retour" du navigateur
-fetch('/api/data').then(...)           → récupère des données serveur (JSON) sans reload
+---
 
-### API REST : 
-C'est une interface qui permet à deux applications de communiquer entre elles via le protocole HTTP, en échangeant des données généralement au format JSON.
+## 🚀 Démarrage rapide
 
-Principes clés : 
+### Prérequis
+- Node.js 18 ou supérieur
+- Une [clé API TMDB](https://www.themoviedb.org/settings/api) gratuite
+- Git
 
-Stateless : le serveur ne garde aucune mémoire du client entre deux requêtes — chaque requête est autonome et contient toutes les infos nécessaires (c'est là que le JWT entre en jeu)​
+### Installation
 
-Client-Serveur : séparation stricte entre le front et le back​
+```bash
+# Cloner le dépôt
+git clone <url-du-repo>
+cd NetflixLight
 
-Système en couches : l'API peut passer par des proxys, load balancers, etc., sans que le client s'en préoccupe​
+# Installer les dépendances
+npm install
 
-Réponses en JSON : format léger, lisible par les humains et les machine
+# Créer le fichier d'environnement
+cp .env.example .env
+```
 
-### Codes a retenir : 
-2xx — Succès
-| Code | Nom        | Quand l'utiliser                                        |
-| ---- | ---------- | ------------------------------------------------------- |
-| 200  | OK         | Requête réussie, données renvoyées (GET) mintfull​      |
-| 201  | Created    | Ressource créée avec succès (POST) laconsole​           |
-| 204  | No Content | Succès mais rien à renvoyer (DELETE) developer.mozilla​ |
-3xx — Redirections
-| Code | Nom               | Quand l'utiliser                              |
-| ---- | ----------------- | --------------------------------------------- |
-| 301  | Moved Permanently | L'URL a changé définitivement dotcom-monitor​ |
-| 302  | Found             | Redirection temporaire wikipedia​             |
-4xx — Erreurs côté client
-| Code | Nom                  | Signification                                                                             |
-| ---- | -------------------- | ----------------------------------------------------------------------------------------- |
-| 400  | Bad Request          | Requête mal formée, JSON invalide, champ manquant ex2​                                    |
-| 401  | Unauthorized         | Non authentifié — token JWT absent ou invalide mintfull​                                  |
-| 403  | Forbidden            | Authentifié mais sans les droits — ex: un user qui tente d'accéder à une route admin dev​ |
-| 404  | Not Found            | Ressource introuvable search-factory​                                                     |
-| 405  | Method Not Allowed   | Mauvais verbe HTTP utilisé sur la route (ex: POST sur une route GET) laconsole​           |
-| 409  | Conflict             | Conflit de données — ex: email déjà utilisé à l'inscription ex2​                          |
-| 422  | Unprocessable Entity | Données syntaxiquement valides mais sémantiquement incorrectes developer.mozilla​         |
-5xx — Erreurs côté serveur
-| Code | Nom                   | Signification                                                   |
-| ---- | --------------------- | --------------------------------------------------------------- |
-| 500  | Internal Server Error | Crash non géré côté serveur (bug, DB down) dev​                 |
-| 502  | Bad Gateway           | Proxy ou load balancer n'a pas pu joindre le serveur wikipedia​ |
-| 503  | Service Unavailable   | Serveur surchargé ou en maintenance ex2​                        |
-| 504  | Gateway Timeout       | Le serveur en amont n'a pas répondu à temps wikipedia​          |
+Renseigner le fichier `.env` :
 
+```env
+PORT=3000
+TMDB_API_KEY=ta_clé_tmdb_ici
+SESSION_SECRET=une_longue_chaine_aleatoire
+DB_PATH=./server/data/netflix.db
+```
 
-### En résumé
-DOM  → le moteur qui affiche et met à jour le contenu
-SPA  → l'architecture qui exploite le DOM pour simuler une navigation sans rechargement
+### Lancer l'application
 
-### Hashache 
-https://peaklab.fr/glossaire/bcrypt > initialement 
-https://peaklab.fr/glossaire/argon2 > Apres recherche
+```bash
+# Compiler le CSS Tailwind (obligatoire la première fois)
+npm run build:css
 
-> Vainqueur du PHC 2015 — le seul algo conçu spécifiquement pour ce besoin
-> Memory-hard — rend les attaques GPU/ASIC prohibitivement coûteuses
-> 3 paramètres tunable — temps, mémoire, parallélisme
-> Résistant aux side-channel attacks (variante id)​
-> Recommandé par l'OWASP en premier choix absolu​
-> API quasi identique à bcrypt en Node.js — migration en 5 minutes
+# Développement (rechargement automatique)
+npm run dev
+
+# Production
+npm start
+```
+
+L'application démarre sur [**http://localhost:3000**](http://localhost:3000) 🎉
+
+### Premiers pas
+1. Créer un compte (mot de passe : 12+ caractères avec maj, min, chiffre, spécial)
+2. Sélectionner ou créer un profil
+3. Explorer les carrousels de la page d'accueil
+4. Rechercher un film ou une série
+5. Ajouter du contenu à sa watchlist depuis la page de détail
+
+---
+
+## 🛠️ Stack technique
+
+<div align="center">
+
+| Couche | Technologie |
+|--------|-------------|
+| **Frontend** | Vanilla JS (SPA, History API) |
+| **Style** | Tailwind CSS v4 |
+| **Backend** | Node.js + Express 4 |
+| **Base de données** | SQLite via `better-sqlite3` |
+| **Authentification** | `express-session` + cookies HTTP-only |
+| **Hachage mot de passe** | Argon2id |
+| **Données films/séries** | API REST TMDB |
+| **Outillage dev** | Nodemon |
+
+</div>
+
+### Pourquoi Vanilla JS ?
+- 🚫 Zéro dépendance framework — manipulation directe du DOM
+- ⚡ Navigation instantanée via l'History API (sans rechargement)
+- 🎓 Compréhension approfondie des APIs navigateur
+- 📦 Pas de build JS — ce qu'on écrit est ce qui s'exécute
+
+---
+
+## 📁 Architecture
+
+```
+NetflixLight/
+├── client/                     → Frontend (fichiers statiques)
+│   ├── index.html              → Point d'entrée HTML unique
+│   ├── css/
+│   │   ├── input.css           → Source Tailwind (à modifier)
+│   │   └── output.css          → CSS compilé (ne pas modifier)
+│   └── js/
+│       ├── app.js              → Bootstrap : init router + vérif auth
+│       ├── core/
+│       │   ├── router.js       → Router SPA (History API)
+│       │   ├── store.js        → État global (utilisateur courant)
+│       │   └── theme.js        → Bascule thème sombre/clair
+│       ├── api/
+│       │   ├── auth.api.js     → Wrappers fetch pour /api/auth/*
+│       │   ├── tmdb.api.js     → Wrappers fetch pour /api/tmdb/*
+│       │   └── watchlist.api.js→ Wrappers fetch pour /api/watchlist/*
+│       ├── components/
+│       │   ├── header.js       → Header persistant + déconnexion
+│       │   └── footer.js       → Footer persistant
+│       └── pages/
+│           ├── home.js         → Hero + carrousels
+│           ├── login.js        → Formulaire de connexion
+│           ├── register.js     → Formulaire d'inscription
+│           ├── search.js       → Recherche avec debounce
+│           ├── detail.js       → Détail film/série + casting + trailer
+│           ├── watchlist.js    → Grille de la watchlist
+│           └── profile.js      → Sélection / gestion des profils
+│
+├── server/                     → Backend (Node.js + Express)
+│   ├── index.js                → Point d'entrée, démarre sur PORT
+│   ├── app.js                  → App Express : session, cors, routes
+│   ├── config/
+│   │   ├── db.js               → Connexion SQLite + création des tables
+│   │   └── env.js              → Chargement des variables d'environnement
+│   ├── routes/                 → Déclaration des routes
+│   ├── controllers/            → Gestionnaires de requêtes (req/res)
+│   ├── services/               → Logique métier (auth, appels TMDB)
+│   ├── models/                 → Requêtes SQL (synchrones)
+│   ├── middleware/
+│   │   ├── auth.js             → Garde requireAuth
+│   │   └── error-handler.js    → Middleware d'erreur global
+│   └── utils/
+│       └── async-handler.js    → Wrapper pour routes async
+│
+├── .env                        → Variables d'environnement (non commité)
+├── package.json
+└── README.md
+```
+
+---
+
+## 🔌 Routes API
+
+| Méthode | Route | Auth | Description |
+|---------|-------|------|-------------|
+| `POST` | `/api/auth/register` | ❌ | Créer un compte |
+| `POST` | `/api/auth/login` | ❌ | Connexion, pose le cookie de session |
+| `POST` | `/api/auth/logout` | ✅ | Détruire la session |
+| `GET`  | `/api/auth/me` | ✅ | Récupérer l'utilisateur courant |
+| `GET`  | `/api/tmdb/home` | ✅ | Tendances + en salle + séries populaires |
+| `GET`  | `/api/tmdb/search?q=&page=` | ✅ | Recherche films & séries |
+| `GET`  | `/api/tmdb/detail/:mediaType/:id` | ✅ | Détail complet + casting + similaires |
+| `GET`  | `/api/watchlist` | ✅ | Récupérer la watchlist |
+| `POST` | `/api/watchlist` | ✅ | Ajouter à la watchlist |
+| `DELETE` | `/api/watchlist/:mediaId` | ✅ | Retirer de la watchlist |
+| `GET`  | `/api/profiles` | ✅ | Lister les profils |
+| `POST` | `/api/profiles` | ✅ | Créer un profil (max 5) |
+| `DELETE` | `/api/profiles/:id` | ✅ | Supprimer un profil |
+
+---
+
+## 🗄️ Schéma de base de données
+
+```sql
+users          — id, username, email, password (argon2), theme, created_at
+profiles       — id, user_id, name, avatar, created_at
+watchlist      — id, user_id, profile_id, tmdb_id, media_type, title, poster_path, added_at
+watch_progress — id, user_id, tmdb_id, media_type, progress, duration, completed
+ratings        — id, user_id, tmdb_id, media_type, rating (1-5), created_at
+```
+
+---
+
+## 🔒 Sécurité
+
+- Mots de passe hachés avec **Argon2id** (jamais stockés en clair)
+- Politique de mot de passe conforme **ANSSI** : 12–128 caractères, maj + min + chiffre + spécial
+- Session stockée **côté serveur** — seul l'identifiant de cookie transite en clair
+- Cookies **HTTP-only** — inaccessibles depuis JavaScript
+- Clé API TMDB jamais exposée au client — tous les appels passent par le backend
+- Entrées validées et assainies sur chaque endpoint
+
+---
+
+## 📝 Licence
+
+Ce projet est sous licence MIT — voir le fichier très detaillé [LICENSE](LICENSE).
+
+---
+
+<div align="center">
+
+By Mathys M.K & Enzo A.
+</div>

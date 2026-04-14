@@ -30,8 +30,8 @@ function validateRegisterInput({ username, email, password }) {
     throw makeError(400, "Invalid email format");
   }
 
-  if (password.length < 8 || password.length > 128) {
-    throw makeError(400, "Password must be 8-128 chars");
+  if (password.length < 12 || password.length > 128) {
+    throw makeError(400, "Password must be 12-128 chars");
   }
 
   return { username: cleanUsername, email: cleanEmail, password };
@@ -44,8 +44,24 @@ function validateLoginInput({ identifier, email, username, password }) {
     throw makeError(400, "Identifier and password are required");
   }
 
-  if (password.length < 8 || password.length > 128) {
-    throw makeError(400, "Password must be 8-128 chars");
+  if (password.length < 12 || password.length > 128) {
+    throw makeError(400, "Password must be 12-128 chars");
+  }
+
+  if (!/[A-Z]/.test(password)) {
+    throw makeError(400, "Password must contain at least one uppercase letter");
+  }
+
+  if (!/[a-z]/.test(password)) {
+    throw makeError(400, "Password must contain at least one lowercase letter");
+  }
+
+  if (!/[0-9]/.test(password)) {
+    throw makeError(400, "Password must contain at least one digit");
+  }
+
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    throw makeError(400, "Password must contain at least one special character");
   }
 
   return { identifier: id, password };
