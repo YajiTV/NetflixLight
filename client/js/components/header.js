@@ -7,7 +7,7 @@
           <a data-link href="/search">Search</a>
           <a data-link href="/watchlist">Watchlist</a>
           <a data-link href="/login">Login</a>
-          <a data-link href="/register">Register</a>
+          ${!window.store.getState().user ? '<a data-link href="/register">Register</a>' : ''}
           <a data-link href="/profile" id="profile-btn">Profile</a>
           <a href="#" id="logout-btn" class="text-red-600">Log out</a>
           <button id="theme-toggle-btn" class="ml-auto text-lg">
