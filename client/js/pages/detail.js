@@ -56,6 +56,8 @@
           </div>
         </section>
       ` : '';
+      const backdrop = film.backdrop_path ? `https://image.tmdb.org/t/p/w1280${film.backdrop_path}` : '';
+      const trailer  = film.videos?.results?.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
       const castList = (film.credits?.cast || []).slice(0, 12);
       const castCarousel = castList.length ? `
@@ -109,13 +111,21 @@
                 ${film.overview || 'Aucun synopsis disponible.'}
               </p>
 
-              <!-- Bouton watchlist -->
-              <button id="btn-watchlist"
-                class="px-5 py-2 rounded-full font-semibold text-sm transition border ${isInWatchlist
-                  ? 'bg-red-600 border-red-600 text-white'
-                  : 'border-white text-white hover:bg-white hover:text-black'}">
-                ${isInWatchlist ? 'In watchlist' : 'Add to watchlist'}
-              </button>
+              <!-- Boutons -->
+              <div class="flex gap-3">
+                ${trailer ? `
+                <button id="btn-trailer" class="px-5 py-2 rounded-full font-semibold text-sm transition border border-white text-white hover:bg-white hover:text-black flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 -ml-1"><path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.647c1.295.742 1.295 2.545 0 3.286L7.279 20.99c-1.25.717-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" /></svg>
+                  Trailer
+                </button>
+                ` : ''}
+                <button id="btn-watchlist"
+                  class="px-5 py-2 rounded-full font-semibold text-sm transition border ${isInWatchlist
+                    ? 'bg-red-600 border-red-600 text-white'
+                    : 'border-white text-white hover:bg-white hover:text-black'}">
+                  ${isInWatchlist ? 'In watchlist' : 'Add to watchlist'}
+                </button>
+              </div>
             </div>
 
           </div>
@@ -152,6 +162,185 @@
           updateBtn();
         }
       });
+
+      function IframeYtb() {
+        const pauseplay = document.getElementById('pauseplay');
+        const volume = document.getElementById('Volume');
+
+        if (!pauseplay || !volume) {
+          return;
+        }
+
+        // Load YouTube API if not already loaded
+        if (!window.YT) {
+          const tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          const firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        let player;
+        let apiReady = false;
+
+        // Check if API is already loaded
+        if (window.YT && window.YT.Player) {
+          apiReady = true;
+          createPlayer();
+        } else {
+          // Wait for API to load
+          window.onYouTubeIframeAPIReady = () => {
+            apiReady = true;
+            createPlayer();
+          };
+        }
+
+        function createPlayer() {
+          if (!apiReady || player) return;
+          
+          const iframe = document.getElementById('trailer');
+          if (!iframe) return;
+
+          try {
+            player = new YT.Player('trailer', {
+              events: {
+                onReady: onPlayerReady,
+                onStateChange: onPlayerStateChange
+              }
+            });
+          } catch (e) {
+            console.error('Erreur création player:', e);
+          }
+        }
+
+        function onPlayerReady(event) {
+          updatePlayPauseButton();
+        }
+
+        function onPlayerStateChange(event) {
+          updatePlayPauseButton();
+        }
+
+        function updatePlayPauseButton() {
+          if (!player) return;
+          try {
+            const pauseplay = document.getElementById('pauseplay');
+            if (!pauseplay) return;
+            
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+              pauseplay.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                  <path fill-rule="evenodd" d="M6.75 5.25a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75H7.5a.75.75 0 01-.75-.75V5.25zm7.5 0a.75.75 0 01.75-.75h1.5a.75.75 0 01.75.75v13.5a.75.75 0 01-.75.75h-1.5a.75.75 0 01-.75-.75V5.25z" clip-rule="evenodd" />
+                </svg>
+              `;
+            } else {
+              pauseplay.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                  <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.647c1.295.742 1.295 2.545 0 3.286L7.279 20.99c-1.25.717-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+                </svg>
+              `;
+            }
+          } catch (e) {
+            console.error('Erreur update button:', e);
+          }
+        }
+
+        // Play/Pause button
+        pauseplay.addEventListener('click', () => {
+          if (!player) {
+            console.warn('Player not ready');
+            return;
+          }
+          try {
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+              player.pauseVideo();
+            } else {
+              player.playVideo();
+            }
+            updatePlayPauseButton();
+          } catch (e) {
+            console.error('Erreur play/pause:', e);
+          }
+        });
+
+        // Volume button
+        volume.addEventListener('click', () => {
+          if (!player) {
+            console.warn('Player not ready');
+            return;
+          }
+          try {
+            if (player.isMuted()) {
+              player.unMute();
+              volume.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                  <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06zM17.78 9.22a.75.75 0 10-1.06 1.06L18.44 12l-1.72 1.72a.75.75 0 001.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L20.56 12l1.72-1.72a.75.75 0 00-1.06-1.06l-1.72 1.72-1.72-1.72z"/>
+                </svg>
+              `;
+            } else {
+              player.mute();
+              volume.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                  <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06zM10.72 11.06a.75.75 0 000 1.06l3.97 3.97a.75.75 0 001.06-1.06l-2.69-2.69 2.69-2.69a.75.75 0 00-1.06-1.06l-3.97 3.97z"/>
+                </svg>
+              `;
+            }
+          } catch (e) {
+            console.error('Erreur volume:', e);
+          }
+        });
+      }
+
+      // Trailer modal logic
+      const btnTrailer = document.getElementById('btn-trailer');
+      if (btnTrailer && trailer) {
+        btnTrailer.addEventListener('click', () => {
+          const modal = document.createElement('div');
+          modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+          modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+          modal.style.backdropFilter = 'blur(12px)';
+          modal.style.WebkitBackdropFilter = 'blur(12px)'; // Pour la compatibilité Safari
+          modal.addEventListener('click', () => modal.remove());
+
+          modal.innerHTML = `
+            <div class="relative w-full max-w-2xl">
+              <button id="close-modal" class="absolute -top-10 right-0 text-white text-3xl font-bold hover:text-gray-300 cursor-pointer">&times;</button>
+              <div class="rounded-[20px] overflow-hidden shadow-2xl bg-black" style="border: 4px solid white;">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                  <iframe id="trailer"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    src="https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0&enablejsapi=1"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+                <!-- Custom Controls -->
+                <div class="bg-black p-4 flex gap-3 justify-center text-white border-t border-gray-700">
+                  <button id="pauseplay" class="px-4 py-2 bg-white text-black font-semibold hover:bg-gray-200 transition flex items-center justify-center" style="border-radius: 12px; width: 44px; height: 44px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                      <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.647c1.295.742 1.295 2.545 0 3.286L7.279 20.99c-1.25.717-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <button id="Volume" class="px-4 py-2 bg-white text-black font-semibold hover:bg-gray-200 transition flex items-center justify-center" style="border-radius: 12px; width: 44px; height: 44px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" class="w-6 h-6">
+                      <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06zM17.78 9.22a.75.75 0 10-1.06 1.06L18.44 12l-1.72 1.72a.75.75 0 001.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 101.06-1.06L20.56 12l1.72-1.72a.75.75 0 00-1.06-1.06l-1.72 1.72-1.72-1.72z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          modal.querySelector('div').addEventListener('click', (e) => e.stopPropagation());
+          modal.querySelector('#close-modal').addEventListener('click', () => modal.remove());
+
+          document.body.appendChild(modal);
+
+          // Initialiser les contrôles personnalisés
+          IframeYtb();
+        });
+      }
     }
   };
 })();
