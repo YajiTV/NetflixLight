@@ -8,7 +8,7 @@ module.exports = {
   },
 
   create(req, res) {
-    const { name, avatar } = req.body;
+    const { name } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ error: 'Profile name is required' });
     }
@@ -16,8 +16,8 @@ module.exports = {
     if (count >= 5) {
       return res.status(400).json({ error: 'Maximum 5 profiles per account' });
     }
-    const result = ProfileModel.create(req.session.userId, name.trim(), avatar || null);
-    res.status(201).json({ id: result.lastInsertRowid, name: name.trim(), avatar: avatar || null });
+    const result = ProfileModel.create(req.session.userId, name.trim());
+    res.status(201).json({ id: result.lastInsertRowid, name: name.trim() });
   },
 
   remove(req, res) {

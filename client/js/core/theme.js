@@ -23,7 +23,7 @@
       this.apply(isLight ? 'dark' : 'light');
       // Met à jour l'icône du bouton dans le header
       const btn = document.getElementById('theme-toggle-btn');
-      if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+      if (btn) btn.textContent = isLight ? '☀️' : '🌒';
     },
 
     // Retourne le thème actuel

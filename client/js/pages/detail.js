@@ -8,12 +8,7 @@
         window.router.navigate('/login');
         return;
       }
-
-      container.innerHTML = `
-        ${window.components.renderHeader()}
-        <main class="max-w-5xl mx-auto px-6 py-10 text-gray-400">Chargement...</main>
-      `;
-
+      
       const film      = await window.api.tmdb.getDetail(type, id);
       const watchlist = await window.api.watchlist.getAll();
       let isInWatchlist = watchlist.some(w => String(w.tmdb_id) === String(id) && w.media_type === type);

@@ -17,9 +17,7 @@ db.exec(`
     username    TEXT    NOT NULL UNIQUE,
     email       TEXT    NOT NULL UNIQUE,
     password    TEXT    NOT NULL,
-    avatar      TEXT    DEFAULT NULL,
     theme       TEXT    DEFAULT 'dark' CHECK(theme IN ('dark', 'light')),
-    role        TEXT    DEFAULT 'user' CHECK(role IN ('user', 'admin')),
     created_at  TEXT    DEFAULT (datetime('now')),
     updated_at  TEXT    DEFAULT (datetime('now'))
   );
@@ -55,7 +53,6 @@ db.exec(`
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id    INTEGER NOT NULL,
     name       TEXT    NOT NULL,
-    avatar     TEXT    DEFAULT NULL,
     created_at TEXT    DEFAULT (datetime('now')),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );

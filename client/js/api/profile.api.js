@@ -10,11 +10,11 @@
     },
 
     // POST /api/profiles → create a new profile
-    create: async function (name, avatar) {
+    create: async function (name) {
       return window.http('/api/profiles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, avatar }),
+        body: JSON.stringify({ name }),
       });
     },
 

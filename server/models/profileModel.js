@@ -7,8 +7,8 @@ module.exports = {
   getById: (id, userId) =>
     db.prepare('SELECT * FROM profiles WHERE id = ? AND user_id = ?').get(id, userId),
 
-  create: (userId, name, avatar) =>
-    db.prepare('INSERT INTO profiles (user_id, name, avatar) VALUES (?, ?, ?)').run(userId, name, avatar),
+  create: (userId, name) =>
+    db.prepare('INSERT INTO profiles (user_id, name) VALUES (?, ?)').run(userId, name),
 
   remove: (id, userId) =>
     db.prepare('DELETE FROM profiles WHERE id = ? AND user_id = ?').run(id, userId),

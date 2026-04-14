@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.store.setUser(data.user);
     }
   } catch (_) {
-    // pas connecté, c'est normal
+    // pas connecté
   }
 
   window.router.init();
