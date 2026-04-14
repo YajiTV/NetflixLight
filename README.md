@@ -16,6 +16,15 @@
 
 ---
 
+## 🎥 Démo
+
+<div align="center">
+
+<img src="client/assets/video/2026-04-14-16-31-06.gif" alt="Démo NetflixLight" width="800"/>
+
+</div>
+
+---
 ## 🎯 Fonctionnalités
 
 <table>
