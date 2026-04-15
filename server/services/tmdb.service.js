@@ -72,7 +72,6 @@ async function getHomeFeed() {
 async function searchMulti(query, page = 1) {
   return tmdbFetch('/search/multi', {
     query,
-    include_adult: 'false',
     page: String(page),
   });
 }
