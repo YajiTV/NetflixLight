@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+
+/* THEME SOMBRE default */
+:root {
+  --bg-page:       #000000;
+  --bg-surface:    #111827;
+  --bg-card:       #1f2937;
+  --text-primary:  #ffffff;
+  --text-muted:    #9ca3af;
+  --border-color:  #374151;
+}
+/* THEME CLAIRE */
+html.light {
+  --bg-page:       #f9fafb;
+  --bg-surface:    #ffffff;
+  --bg-card:       #f3f4f6;
+  --text-primary:  #111827;
+  --text-muted:    #6b7280;
+  --border-color:  #e5e7eb;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 font-semibold transition-all duration-200 rounded;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 font-semibold text-white transition-all duration-200 rounded bg-netflix-red hover:bg-red-700;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 font-semibold text-white transition-all duration-200 bg-gray-800 border border-gray-600 rounded hover:bg-gray-700;
+  }
+
+  .card {
+    @apply overflow-hidden transition-all duration-200 bg-gray-800 rounded-lg hover:shadow-lg;
+  }
+
+  .hero {
+    @apply min-h-screen bg-gradient-to-b from-gray-900 to-black;
+  }
+}

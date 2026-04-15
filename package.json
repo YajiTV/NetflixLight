@@ -1,0 +1,39 @@
+{
+  "name": "netflixlight",
+  "version": "1.0.0",
+  "description": "A Netflix-like SPA built with Vanilla JS, Node.js, Express, and SQLite",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon --watch server server/index.js",
+    "build:css": "tailwindcss -i ./client/css/input.css -o ./client/css/output.css",
+    "watch:css": "tailwindcss -i ./client/css/input.css -o ./client/css/output.css --watch"
+  },
+  "keywords": [
+    "netflix",
+    "spa",
+    "vanilla-js",
+    "express",
+    "sqlite",
+    "tailwindcss",
+    "nodejs",
+    "bcryptjs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "nodemon": "^3.0.2",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^4.2.1"
+  }
+}
