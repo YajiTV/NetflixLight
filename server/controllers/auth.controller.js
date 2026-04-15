@@ -1,5 +1,5 @@
 const AuthService = require("../services/auth.service");
-const {makeError} = require('../utils/errors'); 
+const {makeError} = require('../utils/errors');
 
 function validateRegisterInput({ username, email, password }) {
   if (

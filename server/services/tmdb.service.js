@@ -48,9 +48,8 @@ async function tmdbFetch(path, query = {}) {
 }
 
 async function getHomeFeed() {
-  const [trending, nowPlaying, popularTv, topMovies, topTv] = await Promise.all([
+  const [trending, popularTv, topMovies, topTv] = await Promise.all([
     tmdbFetch('/trending/all/week'),
-    tmdbFetch('/movie/now_playing', { page: 1 }),
     tmdbFetch('/tv/popular', { page: 1 }),
     tmdbFetch('/movie/top_rated', { page: 1 }),
     tmdbFetch('/tv/top_rated', { page: 1 }),
@@ -73,7 +72,6 @@ async function getHomeFeed() {
 async function searchMulti(query, page = 1) {
   return tmdbFetch('/search/multi', {
     query,
-    include_adult: 'false',
     page: String(page),
   });
 }

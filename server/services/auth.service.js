@@ -1,5 +1,6 @@
 const argon2 = require("argon2");
 const UserModel = require("../models/user.models");
+const { makeError } = require('../utils/errors');
 
 async function register({ username, email, password }) {
   const existingEmail = UserModel.findByEmail(email);

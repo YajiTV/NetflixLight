@@ -11,4 +11,4 @@ function toError(status, message, details) {
   return err;
 }
 
-module.exports = { makeError, toError};
+module.exports = { makeError, toError };
