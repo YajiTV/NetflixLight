@@ -32,7 +32,7 @@
           <!-- Title of the results -->
           <h2 id="search-title" class="text-xl font-bold mb-4 text-white"></h2>
 
-          <!-- grille de résultats -->
+          <!-- results grid -->
           <div id="search-results" class="flex gap-4 pb-4 overflow-x-auto">
             <p class="text-gray-400 w-full px-2">Start typing to search...</p>
           </div>
@@ -43,7 +43,7 @@
       const resultsContainer = document.getElementById('search-results');
       const searchTitle = document.getElementById('search-title');
 
-      // recherche
+      // search
       async function search(texte) {
         if (texte === "") {
           resultsContainer.innerHTML = '<p class="text-gray-400 w-full px-2">Start typing to search...</p>';
@@ -80,7 +80,7 @@
               `;
             }
           }
-          // Affichage
+          // Display
           resultsContainer.innerHTML = html;
         } catch (erreur) {
           console.log(erreur);

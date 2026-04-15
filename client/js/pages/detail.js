@@ -56,7 +56,6 @@
           </div>
         </section>
       ` : '';
-      const backdrop = film.backdrop_path ? `https://image.tmdb.org/t/p/w1280${film.backdrop_path}` : '';
       const trailer  = film.videos?.results?.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
       const castList = (film.credits?.cast || []).slice(0, 12);
@@ -91,7 +90,7 @@
         ${window.components.renderHeader()}
         <main class="max-w-6xl mx-auto px-6 sm:px-10 py-10">
 
-          <!-- Fiche film -->
+          <!-- Movie details -->
           <div class="flex gap-8 flex-wrap items-start">
 
             <!-- Poster -->
@@ -111,7 +110,7 @@
                 ${film.overview || 'Aucun synopsis disponible.'}
               </p>
 
-              <!-- Boutons -->
+              <!-- Buttons -->
               <div class="flex gap-3">
                 ${trailer ? `
                 <button id="btn-trailer" class="px-5 py-2 rounded-full font-semibold text-sm transition border border-white text-white hover:bg-white hover:text-black flex items-center gap-2">
@@ -133,7 +132,7 @@
           <!-- Carousel casting -->
           ${castCarousel}
 
-          <!-- Similaires -->
+          <!-- Similar -->
           ${similarCarousel}
 
         </main>
@@ -295,10 +294,10 @@
       if (btnTrailer && trailer) {
         btnTrailer.addEventListener('click', () => {
           const modal = document.createElement('div');
-          modal.className = 'fixed inset-0 flex items-center justify-center z-50 p-4';
+          modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
           modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
           modal.style.backdropFilter = 'blur(12px)';
-          modal.style.WebkitBackdropFilter = 'blur(12px)'; // Pour la compatibilité Safari
+          modal.style.WebkitBackdropFilter = 'blur(12px)'; // For Safari compatibility
           modal.addEventListener('click', () => modal.remove());
 
           modal.innerHTML = `
@@ -337,7 +336,7 @@
 
           document.body.appendChild(modal);
 
-          // Initialiser les contrôles personnalisés
+          // Initialize custom controls
           IframeYtb();
         });
       }

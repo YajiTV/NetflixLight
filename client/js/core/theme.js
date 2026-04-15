@@ -1,13 +1,13 @@
 (function initTheme() {
   window.theme = {
 
-    // Applique le thème
+    // Apply theme
     init: function () {
       const saved = localStorage.getItem('theme') || 'dark';
       this.apply(saved);
     },
 
-    // Applique un thème dark ou light
+    // Apply a dark or light theme
     apply: function (name) {
       if (name === 'light') {
         document.documentElement.classList.add('light');
@@ -17,22 +17,22 @@
       localStorage.setItem('theme', name);
     },
 
-    // switch entre les deux
+    // toggle between the two
     toggle: function () {
       const isLight = document.documentElement.classList.contains('light');
       this.apply(isLight ? 'dark' : 'light');
-      // Met à jour l'icône du bouton dans le header
+      // Update the header button icon
       const btn = document.getElementById('theme-toggle-btn');
       if (btn) btn.textContent = isLight ? '☀️' : '🌒';
     },
 
-    // Retourne le thème actuel
+    // Return the current theme
     current: function () {
       return document.documentElement.classList.contains('light') ? 'light' : 'dark';
     },
 
   };
 
-  // Appliquer immédia
+  // Apply immediately
   window.theme.init();
 })();

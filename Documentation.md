@@ -3,7 +3,7 @@
 ### Documentation : 
 
 API : https://developer.themoviedb.org/reference/trending-movies
-imogie : https://symbl.cc/fr/collections/star-symbols/
+emogie : https://symbl.cc/fr/collections/star-symbols/
 
 
 # DOM & SPA — Notions essentielles
@@ -115,5 +115,5 @@ https://peaklab.fr/glossaire/argon2 > Apres recherche
 > Memory-hard — rend les attaques GPU/ASIC prohibitivement coûteuses
 > 3 paramètres tunable — temps, mémoire, parallélisme
 > Résistant aux side-channel attacks (variante id)​
-> Recommandé par l'OWASP en premier choix absolu​
-> API quasi identique à bcrypt en Node.js — migration en 5 minutes
+> Recommandé par l'OWASP en premier choix absolu​ et le NIST
+> API quasi identique à bcrypt en Node.js

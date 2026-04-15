@@ -3,13 +3,13 @@
 
   window.api.watchlist = {
 
-    // GET /api/watchlist → récupère toute la liste
+    // GET /api/watchlist → fetch the entire list
     getAll: async function () {
       const res = await window.http('/api/watchlist');
       return res && res.ok ? res.json() : [];
     },
 
-    // POST /api/watchlist → ajoute un film/série
+    // POST /api/watchlist → add a movie/series
     add: async function (item) {
       return window.http('/api/watchlist', {
         method: 'POST',
@@ -18,7 +18,7 @@
       });
     },
 
-    // DELETE /api/watchlist/:id?type=... → supprime un film/série
+    // DELETE /api/watchlist/:id?type=... → remove a movie/series
     remove: async function (tmdbId, mediaType) {
       return window.http(`/api/watchlist/${tmdbId}?type=${mediaType}`, {
         method: 'DELETE',

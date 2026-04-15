@@ -6,26 +6,26 @@
     // / => render()
     render: async function (container) {
 
-      // squelette (header, footer)
+      // skeleton (header, footer)
       container.innerHTML = `
         ${window.components.renderHeader()}
         <main>
-          <!--Zone bannière hero-->
+          <!--Hero banner zone-->
           <div id="hero-banner" class="relative w-full" style="height: 60vh; background-color: var(--bg-surface);"></div>
 
-          <!--Zone carousel-->
+          <!--Carousel zone-->
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Trends of the week</h2>
             <div id="trending-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
 
-          <!-- Zone carousel serie pop -->
+          <!-- Popular series carousel zone -->
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Popular series</h2>
             <div id="popular-tv-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
 
-          <!-- Zone popular movie -->
+          <!-- Popular movie zone -->
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Highest rated</h2>
             <div id="top-rated-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
@@ -37,7 +37,7 @@
             <div id="action-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
           </div>
 
-          <!-- Zone Comédie -->
+          <!-- Comedy zone -->
           <div class="max-w-6xl mx-auto px-6 py-10">
             <h2 class="mb-4 text-2xl font-bold">Comedy</h2>
             <div id="comedy-list" class="flex gap-4 pb-4 overflow-x-auto"></div>
@@ -59,7 +59,7 @@
 
       `;
 
-      // chargement du Backend
+      // Backend loading
       try {
         const data = await window.api.tmdb.getHome();
 
@@ -72,7 +72,7 @@
           window.api.tmdb.getGenre(16),
         ]);
 
-        // Caroussel
+        // Carousel
         window.components.Carousel('trending-list', data.trending.results);
         window.components.Carousel('popular-tv-list', data.popularTv.results);
         window.components.Carousel('top-rated-list', data.topRated);
@@ -87,12 +87,12 @@
     },
 
 
-    // Grande bannière
+    // Hero banner
     renderHero: function (movies) {
       const banner = document.getElementById('hero-banner');
       if (!banner || !movies.length) return;
 
-      // Film au hasard parmi les tendances
+      // Random movie from trending
       const movie = movies[Math.floor(Math.random() * movies.length)];
       const imageUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
 
@@ -103,10 +103,10 @@
       const mediaType = movie.media_type || (movie.title ? 'movie' : 'tv');
 
       banner.innerHTML = `
-        <!-- Dégradé noir en bas pour lire le texte -->
+        <!-- Dark gradient at the bottom to read the text -->
         <div class="absolute inset-0 bg-linear-to-t from-black via-transparent to-black/40"></div>
 
-        <!-- Titre + description + boutons en bas à gauche -->
+        <!-- Title + description + buttons at the bottom left -->
         <div class="absolute bottom-10 left-10 z-10 max-w-xl">
           <h1 class="mb-3 text-4xl font-bold">${movie.title || movie.name}</h1>
           <p class="text-gray-300 line-clamp-3 mb-5">${movie.overview}</p>
@@ -121,7 +121,7 @@
         </div>
       `;
 
-      // Logique bouton favoris
+      // Watchlist button logic
       document.getElementById('hero-fav-btn').addEventListener('click', async () => {
         const btn = document.getElementById('hero-fav-btn');
 

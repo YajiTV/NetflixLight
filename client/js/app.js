@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  // check cookie valide
+  // check valid cookie
   try {
     const res = await fetch('/api/auth/me', { credentials: 'include' });
     if (res.ok) {
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.store.setUser(data.user);
     }
   } catch (_) {
-    // pas connecté
+    // not logged in
   }
 
   window.router.init();

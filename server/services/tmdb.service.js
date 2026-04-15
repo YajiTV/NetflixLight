@@ -1,21 +1,14 @@
 const { getEnv } = require('../config/env');
+const { toError } = require('../utils/errors');
 
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const DEFAULT_LANGUAGE = 'en-EN';
 const REQUEST_TIMEOUT_MS = 10000;
-
-function toError(status, message, details) {
-  const err = new Error(message);
-  err.status = status;
-  if (details !== undefined) err.details = details;
-  return err;
-}
 
 async function tmdbFetch(path, query = {}) {
   const env = getEnv();
 
   if (!env.TMDB_API_KEY) {
-    throw toError(500, 'TMDB_API_KEY is missing in environment variables');
+    throw toError(500, 'TMDB_API_KEY required');
   }
 
   const params = new URLSearchParams({
@@ -28,7 +21,7 @@ async function tmdbFetch(path, query = {}) {
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(`${TMDB_BASE_URL}${path}?${params.toString()}`, {
+    const response = await fetch(`${env.TMDB_BASE_URL}${path}?${params.toString()}`, {
       signal: controller.signal,
     });
 
@@ -55,15 +48,14 @@ async function tmdbFetch(path, query = {}) {
 }
 
 async function getHomeFeed() {
-  const [trending, nowPlaying, popularTv, topMovies, topTv] = await Promise.all([
+  const [trending, popularTv, topMovies, topTv] = await Promise.all([
     tmdbFetch('/trending/all/week'),
-    tmdbFetch('/movie/now_playing', { page: 1 }),
     tmdbFetch('/tv/popular', { page: 1 }),
     tmdbFetch('/movie/top_rated', { page: 1 }),
     tmdbFetch('/tv/top_rated', { page: 1 }),
   ]);
 
-  // Mélange films + séries, triés par note décroissante
+  // Mix movies + series, sorted by descending rating
   const topRated = [
     ...topMovies.results.map(m => ({ ...m, media_type: 'movie' })),
     ...topTv.results.map(s => ({ ...s, media_type: 'tv' })),
@@ -71,7 +63,6 @@ async function getHomeFeed() {
 
   return {
     trending,
-    nowPlaying,
     popularTv,
     topRated,
   };
